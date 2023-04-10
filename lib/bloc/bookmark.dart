@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/model/bookmark.dart';
 import 'package:event_bloc/event_bloc.dart';
 import 'package:event_db/event_db.dart';
@@ -10,7 +11,10 @@ const bookmarkDb = "myBookmarks";
 
 class BookmarkBloc extends Bloc {
   BookmarkBloc(
-      {required super.parentChannel, required this.databaseRepository});
+      {required super.parentChannel, required this.databaseRepository}) {
+    eventChannel.addEventListener(BookmarkEvent.addBookmarkCollection.event,
+        (p0, p1) => addBookmarkCollection(p1));
+  }
 
   final DatabaseRepository databaseRepository;
   late final database = SpecificDatabase(databaseRepository, bookmarkDb);
@@ -45,6 +49,7 @@ class BookmarkBloc extends Bloc {
     bookmarks
         .map((e) => bookmarkList.list.indexOf(e.id!))
         .forEach((element) => _addedBookmarkCollectionIndex.add(element));
+    updateBloc();
   }
 
   Future<BookmarkCollectionModel> addBookmarkCollection(
@@ -53,6 +58,7 @@ class BookmarkBloc extends Bloc {
     final newModel = await bookmarkMap.addModel(model);
     bookmarkList.generateList(bookmarkMap.map.values);
     _addedBookmarkCollectionIndex.add(bookmarkList.list.indexOf(newModel.id!));
+    updateBloc();
 
     return newModel;
   }
@@ -62,6 +68,7 @@ class BookmarkBloc extends Bloc {
     model.lastEdited = DateTime.now();
     final newModel = await bookmarkMap.updateModel(model);
     bookmarkList.generateList(bookmarkMap.map.values);
+    updateBloc();
 
     return newModel;
   }
@@ -74,6 +81,7 @@ class BookmarkBloc extends Bloc {
     final index = bookmarkList.list.indexOf(model.id!);
     bookmarkList.generateList(bookmarkMap.map.values);
     _removeddBookmarkCollectionIndex.add(Tuple2(index, model));
+    updateBloc();
 
     return true;
   }

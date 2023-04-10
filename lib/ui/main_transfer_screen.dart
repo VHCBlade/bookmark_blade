@@ -1,3 +1,4 @@
+import 'package:bookmark_blade/ui/bookmark/main.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:event_navigation/event_navigation.dart';
 import 'package:flutter/material.dart';
@@ -23,9 +24,9 @@ class MainTransferScreen extends StatelessWidget {
         onTap: onTap,
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark), label: 'My Bookmarks'),
+              icon: Icon(Icons.bookmark), label: 'Bookmarks'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.bookmarks), label: 'External Bookmarks'),
+              icon: Icon(Icons.bookmarks), label: 'External'),
           BottomNavigationBarItem(
               icon: Icon(Icons.import_export), label: 'Import'),
           BottomNavigationBarItem(
@@ -47,9 +48,11 @@ class MainCarouselScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainNavigationFullScreenCarousel(
-        navigationOptions: const ["bookamrk", "external", "import", "settings"],
+        navigationOptions: const ["bookmark", "external", "import", "settings"],
         navigationBuilder: (_, navigation) {
           switch (navigation) {
+            case "bookmark":
+              return const BookmarkScreen();
             default:
               return Container();
           }

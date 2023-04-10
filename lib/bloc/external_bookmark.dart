@@ -45,6 +45,7 @@ class ExternalBookmarkBloc extends Bloc {
     bookmarks
         .map((e) => bookmarkList.list.indexOf(e.id!))
         .forEach((element) => _addedBookmarkCollectionIndex.add(element));
+    updateBloc();
   }
 
   Future<BookmarkCollectionModel> addBookmarkCollection(
@@ -52,6 +53,7 @@ class ExternalBookmarkBloc extends Bloc {
     final newModel = await bookmarkMap.addModel(model);
     bookmarkList.generateList(bookmarkMap.map.values);
     _addedBookmarkCollectionIndex.add(bookmarkList.list.indexOf(newModel.id!));
+    updateBloc();
 
     return newModel;
   }
@@ -60,6 +62,7 @@ class ExternalBookmarkBloc extends Bloc {
       BookmarkCollectionModel model) async {
     final newModel = await bookmarkMap.updateModel(model);
     bookmarkList.generateList(bookmarkMap.map.values);
+    updateBloc();
 
     return newModel;
   }
@@ -72,6 +75,7 @@ class ExternalBookmarkBloc extends Bloc {
     final index = bookmarkList.list.indexOf(model.id!);
     bookmarkList.generateList(bookmarkMap.map.values);
     _removeddBookmarkCollectionIndex.add(Tuple2(index, model));
+    updateBloc();
 
     return true;
   }
