@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/model/bookmark.dart';
@@ -12,8 +13,15 @@ const bookmarkDb = "myBookmarks";
 class BookmarkBloc extends Bloc {
   BookmarkBloc(
       {required super.parentChannel, required this.databaseRepository}) {
+    eventChannel.addEventListener(
+        BookmarkEvent.loadAll.event, (p0, p1) => loadAll());
     eventChannel.addEventListener(BookmarkEvent.addBookmarkCollection.event,
         (p0, p1) => addBookmarkCollection(p1));
+    eventChannel.addEventListener(BookmarkEvent.deleteBookmarkCollection.event,
+        (p0, p1) => deleteBookmarkCollection(p1));
+    eventChannel.addEventListener<ListMovement<BookmarkCollectionModel>>(
+        BookmarkEvent.reorderBookmarkCollections.event,
+        (p0, p1) => reorderBookmarkCollections(p1.moved, p1.to));
   }
 
   final DatabaseRepository databaseRepository;
@@ -24,7 +32,7 @@ class BookmarkBloc extends Bloc {
     supplier: BookmarkCollectionModel.new,
   );
   final bookmarkList = SortedSearchList<BookmarkCollectionModel, String>(
-      comparator: (a, b) => a.ordinal.compareTo(b.ordinal),
+      comparator: (a, b) => b.ordinal.compareTo(a.ordinal),
       converter: (e) => e.id!);
   bool loading = false;
 
@@ -56,6 +64,7 @@ class BookmarkBloc extends Bloc {
       BookmarkCollectionModel model) async {
     model.lastEdited = DateTime.now();
     final newModel = await bookmarkMap.addModel(model);
+    newModel.ordinal = bookmarkMap.map.length;
     bookmarkList.generateList(bookmarkMap.map.values);
     _addedBookmarkCollectionIndex.add(bookmarkList.list.indexOf(newModel.id!));
     updateBloc();
@@ -84,5 +93,55 @@ class BookmarkBloc extends Bloc {
     updateBloc();
 
     return true;
+  }
+
+  Future<void> reorderBookmarkCollections(
+      BookmarkCollectionModel model, int newOrdinal,
+      [bool shouldUpdateBloc = true]) async {
+    print(newOrdinal);
+    final list = bookmarkMap.map.keys.toList();
+    list.sort((a, b) =>
+        bookmarkMap.map[b]!.ordinal.compareTo(bookmarkMap.map[a]!.ordinal));
+
+    newOrdinal = min(newOrdinal, list.length);
+    final initialOrdinal = list.indexOf(model.id!);
+
+    if (newOrdinal == initialOrdinal) {
+      return;
+    }
+
+    final updatedModels = <BookmarkCollectionModel>{};
+
+    for (int i = 0; i < list.length; i++) {
+      final pastOldIndex = i >= initialOrdinal;
+      final pastNewIndex = i >= newOrdinal;
+
+      if (!pastOldIndex && !pastNewIndex) {
+        continue;
+      }
+      if (pastNewIndex && pastOldIndex) {
+        break;
+      }
+      final updatedModel = bookmarkMap.map[list[i]]!;
+      updatedModels.add(updatedModel);
+      if (pastNewIndex) {
+        updatedModel.ordinal = list.length - i - 2;
+      }
+      if (pastOldIndex) {
+        updatedModel.ordinal = list.length - i;
+      }
+    }
+    updatedModels.add(model);
+    model.ordinal =
+        list.length - newOrdinal - (newOrdinal > initialOrdinal ? 0 : 1);
+
+    print(list.map((e) => bookmarkMap.map[e]!.ordinal));
+    print(list.map((e) => bookmarkMap.map[e]!.bookmarkName));
+    bookmarkList.generateList(bookmarkMap.map.values);
+
+    if (shouldUpdateBloc) {
+      updateBloc();
+    }
+    await Future.wait(updatedModels.map(bookmarkMap.updateModel));
   }
 }

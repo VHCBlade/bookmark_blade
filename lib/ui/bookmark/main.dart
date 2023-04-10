@@ -26,6 +26,7 @@ class BookmarkListScreen extends StatelessWidget {
         title: const Text("My Bookmarks"),
       ),
       body: ReorderableListView.builder(
+        buildDefaultDragHandles: false,
         itemBuilder: (context, index) {
           if (index >= bloc.bookmarkList.list.length) {
             return const SizedBox(key: ValueKey("Padding"), height: 30);
@@ -35,13 +36,15 @@ class BookmarkListScreen extends StatelessWidget {
           return BookmarkListWidget(
             key: ValueKey(bookmarkCollection.id),
             bookmark: bookmarkCollection,
+            showReorderable: true,
+            index: index,
           );
         },
         itemCount: bloc.bookmarkList.list.length + 1,
-        onReorder: (int oldIndex, int newIndex) {
-          print(oldIndex);
-          print(newIndex);
-        },
+        onReorder: (int oldIndex, int newIndex) => context.fireEvent(
+          BookmarkEvent.reorderBookmarkCollections.event,
+          ListMovement(bloc.bookmarkCollectionAt(oldIndex)!, newIndex),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add,
@@ -68,11 +71,50 @@ class BookmarkListScreen extends StatelessWidget {
 
 class BookmarkListWidget extends StatelessWidget {
   final BookmarkCollectionModel bookmark;
+  final bool showReorderable;
+  final int? index;
 
-  const BookmarkListWidget({super.key, required this.bookmark});
+  const BookmarkListWidget({
+    super.key,
+    required this.bookmark,
+    required this.showReorderable,
+    this.index,
+  }) : assert(!showReorderable || index != null);
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(title: Text(bookmark.bookmarkName));
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            Text(bookmark.bookmarkName),
+            Expanded(child: Container()),
+            IconButton(
+                onPressed: () => showEventDialog<bool>(
+                      context: context,
+                      builder: (_) => const ConfirmationDialog(
+                          title: Text(
+                              "Are you sure you want to delete this bookmark collection?")),
+                      onResponse: (BlocEventChannel eventChannel, response) =>
+                          response
+                              ? eventChannel.fireEvent(
+                                  BookmarkEvent.deleteBookmarkCollection.event,
+                                  bookmark)
+                              : null,
+                    ),
+                icon: const Icon(Icons.delete)),
+            if (showReorderable)
+              ReorderableDragStartListener(
+                index: index!,
+                child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Icon(Icons.reorder)),
+              )
+          ]),
+        ),
+      ),
+    );
   }
 }

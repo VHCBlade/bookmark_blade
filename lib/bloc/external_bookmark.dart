@@ -20,7 +20,7 @@ class ExternalBookmarkBloc extends Bloc {
     supplier: BookmarkCollectionModel.new,
   );
   final bookmarkList = SortedSearchList<BookmarkCollectionModel, String>(
-      comparator: (a, b) => a.ordinal.compareTo(b.ordinal),
+      comparator: (a, b) => b.ordinal.compareTo(a.ordinal),
       converter: (e) => e.id!);
   bool loading = false;
 
