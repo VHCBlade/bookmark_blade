@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/model/bookmark.dart';
@@ -56,7 +55,7 @@ class BookmarkBloc extends Bloc {
     bookmarkList.generateList(bookmarks);
     bookmarks
         .map((e) => bookmarkList.list.indexOf(e.id!))
-        .forEach((element) => _addedBookmarkCollectionIndex.add(element));
+        .forEach(_addedBookmarkCollectionIndex.add);
     updateBloc();
   }
 
@@ -98,50 +97,13 @@ class BookmarkBloc extends Bloc {
   Future<void> reorderBookmarkCollections(
       BookmarkCollectionModel model, int newOrdinal,
       [bool shouldUpdateBloc = true]) async {
-    print(newOrdinal);
-    final list = bookmarkMap.map.keys.toList();
-    list.sort((a, b) =>
-        bookmarkMap.map[b]!.ordinal.compareTo(bookmarkMap.map[a]!.ordinal));
+    final reorder = bookmarkMap.reorder(model, newOrdinal);
 
-    newOrdinal = min(newOrdinal, list.length);
-    final initialOrdinal = list.indexOf(model.id!);
-
-    if (newOrdinal == initialOrdinal) {
-      return;
-    }
-
-    final updatedModels = <BookmarkCollectionModel>{};
-
-    for (int i = 0; i < list.length; i++) {
-      final pastOldIndex = i >= initialOrdinal;
-      final pastNewIndex = i >= newOrdinal;
-
-      if (!pastOldIndex && !pastNewIndex) {
-        continue;
-      }
-      if (pastNewIndex && pastOldIndex) {
-        break;
-      }
-      final updatedModel = bookmarkMap.map[list[i]]!;
-      updatedModels.add(updatedModel);
-      if (pastNewIndex) {
-        updatedModel.ordinal = list.length - i - 2;
-      }
-      if (pastOldIndex) {
-        updatedModel.ordinal = list.length - i;
-      }
-    }
-    updatedModels.add(model);
-    model.ordinal =
-        list.length - newOrdinal - (newOrdinal > initialOrdinal ? 0 : 1);
-
-    print(list.map((e) => bookmarkMap.map[e]!.ordinal));
-    print(list.map((e) => bookmarkMap.map[e]!.bookmarkName));
     bookmarkList.generateList(bookmarkMap.map.values);
 
     if (shouldUpdateBloc) {
       updateBloc();
     }
-    await Future.wait(updatedModels.map(bookmarkMap.updateModel));
+    await reorder;
   }
 }

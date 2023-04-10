@@ -1,27 +1,32 @@
 import 'package:event_db/event_db.dart';
 import 'package:tuple/tuple.dart';
 
-class BookmarkModel extends GenericModel {
+class BookmarkModel extends GenericModel with OrdereableModel {
   late String url;
   late String name;
   bool launch = true;
+
+  @override
+  int ordinal = 0;
 
   @override
   Map<String, Tuple2<Getter, Setter>> getGetterSetterMap() => {
         "url": Tuple2(() => url, (value) => url = value),
         "name": Tuple2(() => name, (value) => name = value),
         "launch": Tuple2(() => launch, (value) => launch = value),
+        "ordinal": ordinalGetterSetter,
       };
 
   @override
   String get type => "BookmarkModel";
 }
 
-class BookmarkCollectionModel extends GenericModel {
+class BookmarkCollectionModel extends GenericModel with OrdereableModel {
   late String bookmarkName;
   DateTime lastEdited = DateTime.now();
   Map<String, BookmarkModel> bookmarkMap = {};
   List<String> bookmarkOrder = [];
+  @override
   int ordinal = 0;
 
   @override
@@ -33,7 +38,7 @@ class BookmarkCollectionModel extends GenericModel {
             (value) => bookmarkMap = value ?? {}, BookmarkModel.new),
         "bookmarkOrder": Tuple2(() => bookmarkOrder,
             (val) => bookmarkOrder = val.map<String>((e) => "$e").toList()),
-        "ordinal": Tuple2(() => ordinal, (value) => ordinal = value),
+        "ordinal": ordinalGetterSetter,
       };
 
   @override

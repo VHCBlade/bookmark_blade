@@ -44,7 +44,7 @@ class ExternalBookmarkBloc extends Bloc {
     bookmarkList.generateList(bookmarks);
     bookmarks
         .map((e) => bookmarkList.list.indexOf(e.id!))
-        .forEach((element) => _addedBookmarkCollectionIndex.add(element));
+        .forEach(_addedBookmarkCollectionIndex.add);
     updateBloc();
   }
 

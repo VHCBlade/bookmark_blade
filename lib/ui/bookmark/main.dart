@@ -2,6 +2,7 @@ import 'package:bookmark_blade/bloc/bookmark.dart';
 import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/model/bookmark.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
+import 'package:event_db/event_db.dart';
 import 'package:event_modals/event_modals.dart';
 import 'package:flutter/material.dart';
 

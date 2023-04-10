@@ -1,12 +1,6 @@
 import 'package:bookmark_blade/model/bookmark.dart';
 import 'package:event_bloc/event_bloc.dart';
-
-class ListMovement<T> {
-  final T moved;
-  final int to;
-
-  ListMovement(this.moved, this.to);
-}
+import 'package:event_db/event_db.dart';
 
 enum BookmarkEvent<T> {
   loadAll<void>(),
