@@ -1,4 +1,5 @@
-import 'package:bookmark_blade/bloc/bookmark.dart';
+import 'package:bookmark_blade/bloc/bookmark/bookmark.dart';
+import 'package:bookmark_blade/bloc/bookmark/edit.dart';
 import 'package:bookmark_blade/bloc/external_bookmark.dart';
 import 'package:bookmark_blade/bloc/navigation/navigation.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
@@ -14,4 +15,7 @@ final blocBuilders = [
   BlocBuilder<ExternalBookmarkBloc>((read, channel) => ExternalBookmarkBloc(
       parentChannel: channel,
       databaseRepository: read.read<DatabaseRepository>())),
+  BlocBuilder<BookmarkEditBloc>((read, channel) => BookmarkEditBloc(
+        parentChannel: channel,
+      )),
 ];

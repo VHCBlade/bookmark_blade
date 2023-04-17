@@ -1,4 +1,6 @@
-import 'package:bookmark_blade/ui/bookmark/bookmark_list.dart';
+import 'package:bookmark_blade/events/bookmark.dart';
+import 'package:bookmark_blade/model/bookmark.dart';
+import 'package:bookmark_blade/ui/bookmark/edit_collection.dart';
 import 'package:bookmark_blade/ui/bookmark/collection_list.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:event_navigation/event_navigation.dart';
@@ -15,7 +17,7 @@ class BookmarkScreen extends StatelessWidget {
       return const BookmarkCollectionListScreen();
     }
 
-    return const BookmarkListScreen();
+    return const MainBookmarkCollectionScreen();
   }
 
   @override

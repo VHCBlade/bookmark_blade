@@ -8,6 +8,8 @@ enum BookmarkEvent<T> {
   updateBookmarkCollection<BookmarkCollectionModel>(),
   deleteBookmarkCollection<BookmarkCollectionModel>(),
   reorderBookmarkCollections<ListMovement<BookmarkCollectionModel>>(),
+
+  selectBookmarkCollection<BookmarkCollectionModel?>(),
   ;
 
   BlocEventType<T> get event => BlocEventType.fromObject(this);
