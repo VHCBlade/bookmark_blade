@@ -62,8 +62,8 @@ class BookmarkBloc extends Bloc {
   Future<BookmarkCollectionModel> addBookmarkCollection(
       BookmarkCollectionModel model) async {
     model.lastEdited = DateTime.now();
-    final newModel = await bookmarkMap.addModel(model);
-    newModel.ordinal = bookmarkMap.map.length;
+    final newModel =
+        await bookmarkMap.addModel(bookmarkMap.setOrdinalOfNewEntry(model));
     bookmarkList.generateList(bookmarkMap.map.values);
     _addedBookmarkCollectionIndex.add(bookmarkList.list.indexOf(newModel.id!));
     updateBloc();
