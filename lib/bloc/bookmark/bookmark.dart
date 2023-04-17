@@ -16,6 +16,9 @@ class BookmarkBloc extends Bloc {
         BookmarkEvent.loadAll.event, (p0, p1) => loadAll());
     eventChannel.addEventListener(BookmarkEvent.addBookmarkCollection.event,
         (p0, p1) => addBookmarkCollection(p1));
+    eventChannel.addEventListener<BookmarkCollectionModel>(
+        BookmarkEvent.updateBookmarkCollection.event,
+        (p0, p1) => updateBookmarkCollection(p1));
     eventChannel.addEventListener(BookmarkEvent.deleteBookmarkCollection.event,
         (p0, p1) => deleteBookmarkCollection(p1));
     eventChannel.addEventListener<ListMovement<BookmarkCollectionModel>>(

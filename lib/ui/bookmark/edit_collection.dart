@@ -3,11 +3,12 @@ import 'package:bookmark_blade/bloc/bookmark/edit.dart';
 import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/model/bookmark.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
+import 'package:event_modals/event_modals.dart';
 import 'package:event_navigation/event_navigation.dart';
 import 'package:flutter/material.dart';
 
-class MainBookmarkCollectionScreen extends StatelessWidget {
-  const MainBookmarkCollectionScreen({super.key});
+class BookmarkCollectionScreen extends StatelessWidget {
+  const BookmarkCollectionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +23,12 @@ class MainBookmarkCollectionScreen extends StatelessWidget {
           BookmarkEvent.selectBookmarkCollection.event, selectedBookmark));
     }
 
-    return const BookmarkCollectionScreen();
+    return const EditBookmarkCollectionScreen();
   }
 }
 
-class BookmarkCollectionScreen extends StatelessWidget {
-  const BookmarkCollectionScreen({super.key});
+class EditBookmarkCollectionScreen extends StatelessWidget {
+  const EditBookmarkCollectionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,21 @@ class BookmarkCollectionScreen extends StatelessWidget {
       appBar: AppBar(
         leading: const BlocBackButton(),
         title: Text(bloc.model?.bookmarkName ?? "Unknown"),
+        actions: [
+          if (bloc.hasModel)
+            IconButton(
+                onPressed: () => showEventDialog<String>(
+                      context: context,
+                      onResponse: (BlocEventChannel eventChannel, response) =>
+                          eventChannel.fireEvent<String>(
+                              BookmarkEvent.changeBookmarkName.event, response),
+                      builder: (_) => StringEditModal(
+                        title: const Text("Set Title"),
+                        initialValue: bloc.model!.bookmarkName,
+                      ),
+                    ),
+                icon: const Icon(Icons.edit)),
+        ],
       ),
     );
   }

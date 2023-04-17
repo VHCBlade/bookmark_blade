@@ -17,7 +17,7 @@ class BookmarkScreen extends StatelessWidget {
       return const BookmarkCollectionListScreen();
     }
 
-    return const MainBookmarkCollectionScreen();
+    return const BookmarkCollectionScreen();
   }
 
   @override

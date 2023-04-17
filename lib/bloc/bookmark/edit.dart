@@ -6,6 +6,8 @@ class BookmarkEditBloc extends Bloc {
   BookmarkEditBloc({required super.parentChannel}) {
     eventChannel.addEventListener<BookmarkCollectionModel?>(
         BookmarkEvent.selectBookmarkCollection.event, (p0, p1) => model = p1);
+    eventChannel.addEventListener<String>(
+        BookmarkEvent.changeBookmarkName.event, (p0, p1) => setName(p1));
   }
 
   BookmarkCollectionModel? _model;
@@ -19,4 +21,26 @@ class BookmarkEditBloc extends Bloc {
   }
 
   bool get hasModel => model != null;
+
+  void update() {
+    if (hasModel) {
+      eventChannel.fireEvent(
+          BookmarkEvent.updateBookmarkCollection.event, model!);
+    }
+    updateBloc();
+  }
+
+  void setName(String name) {
+    if (!hasModel) {
+      return;
+    }
+    final newName = name.trim();
+
+    if (newName.isEmpty || newName == model!.bookmarkName) {
+      return;
+    }
+
+    model!.bookmarkName = newName;
+    update();
+  }
 }
