@@ -8,6 +8,8 @@ class BookmarkEditBloc extends Bloc {
         BookmarkEvent.selectBookmarkCollection.event, (p0, p1) => model = p1);
     eventChannel.addEventListener<String>(
         BookmarkEvent.changeBookmarkName.event, (p0, p1) => setName(p1));
+    eventChannel.addEventListener<BookmarkModel>(
+        BookmarkEvent.addBookmark.event, (p0, p1) => addBookmark(p1));
   }
 
   BookmarkCollectionModel? _model;
@@ -41,6 +43,25 @@ class BookmarkEditBloc extends Bloc {
     }
 
     model!.bookmarkName = newName;
+    update();
+  }
+
+  void addBookmark(BookmarkModel bookmark) {
+    if (!hasModel) {
+      return;
+    }
+
+    if (bookmark.url.trim().isEmpty || bookmark.name.trim().isEmpty) {
+      return;
+    }
+    bookmark.url = bookmark.url.trim();
+    bookmark.name = bookmark.name.trim();
+    model!.bookmarkMap[bookmark.autoGenId] = bookmark;
+    model!.bookmarkOrder = [
+      bookmark.autoGenId,
+      ...model!.bookmarkOrder.where((element) => element != bookmark.autoGenId)
+    ];
+
     update();
   }
 }

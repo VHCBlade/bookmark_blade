@@ -2,6 +2,7 @@ import 'package:bookmark_blade/bloc/bookmark/bookmark.dart';
 import 'package:bookmark_blade/bloc/bookmark/edit.dart';
 import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/model/bookmark.dart';
+import 'package:bookmark_blade/ui/bookmark/bookmark_modal.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:event_modals/event_modals.dart';
 import 'package:event_navigation/event_navigation.dart';
@@ -53,6 +54,28 @@ class EditBookmarkCollectionScreen extends StatelessWidget {
                 icon: const Icon(Icons.edit)),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add,
+            color: Theme.of(context).textTheme.displayMedium?.color),
+        onPressed: () => showEventDialog<BookmarkModel>(
+          context: context,
+          onResponse: (BlocEventChannel eventChannel, BookmarkModel response) {
+            eventChannel.fireEvent<BookmarkModel>(
+                BookmarkEvent.addBookmark.event, response);
+          },
+          builder: (_) => const BookmarkModal(),
+        ),
+      ),
+      body: !bloc.hasModel
+          ? const Text(
+              "Unable to find the given Bookmark Collection",
+              textAlign: TextAlign.center,
+            )
+          : ListView.builder(
+              itemBuilder: (context, index) => Text(bloc
+                  .model!.bookmarkMap[bloc.model!.bookmarkOrder[index]]!.name),
+              itemCount: bloc.model!.bookmarkOrder.length,
+            ),
     );
   }
 }

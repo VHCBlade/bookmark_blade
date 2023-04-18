@@ -12,6 +12,7 @@ enum BookmarkEvent<T> {
   // Edit
   selectBookmarkCollection<BookmarkCollectionModel?>(),
   changeBookmarkName<String>(),
+  addBookmark<BookmarkModel>(),
   ;
 
   BlocEventType<T> get event => BlocEventType.fromObject(this);
