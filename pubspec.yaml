@@ -11,10 +11,15 @@ dependencies:
   flutter:
     sdk: flutter
 
+  bookmark_models:
+    git:
+      ref: master
+      url: git@github.com:VHCBlade/bookmark_models.git
+
   carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.2
 
-  event_essay: ^0.1.0
+  event_essay: ^0.1.1
   event_bloc: ^4.2.0
   event_db: ^0.1.6
   # event_db:

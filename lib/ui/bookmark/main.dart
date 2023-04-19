@@ -1,5 +1,3 @@
-import 'package:bookmark_blade/events/bookmark.dart';
-import 'package:bookmark_blade/model/bookmark.dart';
 import 'package:bookmark_blade/ui/bookmark/edit_collection.dart';
 import 'package:bookmark_blade/ui/bookmark/collection_list.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';

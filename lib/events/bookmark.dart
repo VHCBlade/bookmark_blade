@@ -1,4 +1,4 @@
-import 'package:bookmark_blade/model/bookmark.dart';
+import 'package:bookmark_models/bookmark_models.dart';
 import 'package:event_bloc/event_bloc.dart';
 import 'package:event_db/event_db.dart';
 

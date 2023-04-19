@@ -1,8 +1,8 @@
 import 'package:bookmark_blade/bloc/bookmark/bookmark.dart';
 import 'package:bookmark_blade/bloc/bookmark/edit.dart';
 import 'package:bookmark_blade/events/bookmark.dart';
-import 'package:bookmark_blade/model/bookmark.dart';
 import 'package:bookmark_blade/ui/bookmark/bookmark_modal.dart';
+import 'package:bookmark_models/bookmark_models.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:event_db/event_db.dart';
 import 'package:event_essay/event_essay.dart';

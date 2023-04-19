@@ -1,4 +1,4 @@
-import 'package:bookmark_blade/model/bookmark.dart';
+import 'package:bookmark_models/bookmark_models.dart';
 import 'package:event_hive/event_hive.dart';
 import 'package:vhcblade_theme/vhcblade_picker.dart';
 
