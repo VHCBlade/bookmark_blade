@@ -7,10 +7,19 @@ class UrlRepository extends Repository {
   @override
   List<BlocEventListener> generateListeners(BlocEventChannel eventChannel) => [
         eventChannel.addEventListener<String>(
-            EssayEvent.url.event, (_, val) => _launch(val)),
+            EssayEvent.url.event, (_, val) => launchTarget(val)),
       ];
 
-  void _launch(String target) {
-    launchUrl(Uri.parse(target), mode: LaunchMode.externalApplication);
+  void launchTarget(String target) {
+    launchUrl(Uri.parse(prefixIfNecessary(target)),
+        mode: LaunchMode.externalApplication);
+  }
+
+  String prefixIfNecessary(String target) {
+    if (!target.startsWith(RegExp("[^\\/]*://"))) {
+      return target;
+    }
+
+    return "https://$target";
   }
 }
