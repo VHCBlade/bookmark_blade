@@ -16,7 +16,8 @@ class UrlRepository extends Repository {
   }
 
   String prefixIfNecessary(String target) {
-    if (!target.startsWith(RegExp("[^\\/]*://"))) {
+    RegExp regExp = RegExp(r'^.+:\/\/.+');
+    if (regExp.hasMatch(target)) {
       return target;
     }
 

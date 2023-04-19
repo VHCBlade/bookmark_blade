@@ -4,6 +4,7 @@ import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/model/bookmark.dart';
 import 'package:bookmark_blade/ui/bookmark/bookmark_modal.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
+import 'package:event_db/event_db.dart';
 import 'package:event_essay/event_essay.dart';
 import 'package:event_modals/event_modals.dart';
 import 'package:event_navigation/event_navigation.dart';
@@ -90,7 +91,12 @@ class EditBookmarkCollectionScreen extends StatelessWidget {
                 );
               },
               itemCount: bloc.model!.bookmarkOrder.length,
-              onReorder: (int oldIndex, int newIndex) {},
+              onReorder: (int oldIndex, int newIndex) {
+                final selectedModel = bloc
+                    .model!.bookmarkMap[bloc.model!.bookmarkOrder[oldIndex]]!;
+                context.fireEvent(BookmarkEvent.reorderBookmarks.event,
+                    ListMovement(selectedModel, newIndex));
+              },
             ),
     );
   }
@@ -130,14 +136,23 @@ class BookmarkLinkWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child:
                 Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(bookmark.name, textAlign: TextAlign.start),
-                  Text(bookmark.url, textAlign: TextAlign.start),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      bookmark.name,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(bookmark.url, textAlign: TextAlign.start),
+                  ],
+                ),
               ),
-              Expanded(child: Container()),
+              const SizedBox(width: 5),
               ElevatedButton(
                   onPressed: () =>
                       context.fireEvent(EssayEvent.url.event, bookmark.url),

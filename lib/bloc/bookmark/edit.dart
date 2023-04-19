@@ -1,6 +1,7 @@
 import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/model/bookmark.dart';
 import 'package:event_bloc/event_bloc.dart';
+import 'package:event_db/event_db.dart';
 
 class BookmarkEditBloc extends Bloc {
   BookmarkEditBloc({required super.parentChannel}) {
@@ -12,6 +13,8 @@ class BookmarkEditBloc extends Bloc {
         BookmarkEvent.addBookmark.event, (p0, p1) => addBookmark(p1));
     eventChannel.addEventListener<BookmarkModel>(
         BookmarkEvent.updateBookmark.event, (p0, p1) => addBookmark(p1, false));
+    eventChannel.addEventListener<ListMovement<BookmarkModel>>(
+        BookmarkEvent.reorderBookmarks.event, (p0, p1) => reorderBookmark(p1));
   }
 
   BookmarkCollectionModel? _model;
@@ -66,6 +69,20 @@ class BookmarkEditBloc extends Bloc {
             .where((element) => element != bookmark.autoGenId)
       ];
     }
+
+    update();
+  }
+
+  void reorderBookmark(ListMovement<BookmarkModel> movement) {
+    if (!hasModel) {
+      return;
+    }
+
+    final initialIndex = model!.bookmarkOrder.indexOf(movement.moved.id!);
+    model!.bookmarkOrder.insert(movement.to, movement.moved.id!);
+
+    model!.bookmarkOrder
+        .removeAt(initialIndex + (movement.to < initialIndex ? 1 : 0));
 
     update();
   }
