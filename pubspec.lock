@@ -30,7 +30,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: e60e135120283a1fd630ad3b5d8c982d14485524
+      resolved-ref: eb1f6a25046850a3d3f4aa01aeff53f686dee9d0
       url: "git@github.com:VHCBlade/bookmark_models.git"
     source: git
     version: "1.0.0"
@@ -126,10 +126,10 @@ packages:
     dependency: "direct main"
     description:
       name: event_bloc
-      sha256: "015a71a625852f6d6d8c9525132b2b4b47bf96ba84f35d07b0e50b995ff13e81"
+      sha256: f7433ba77f0c1f5b547188c1841c5c6b042cc1d4acf44cb5aaa4e06db3594ecf
       url: "https://pub.dev"
     source: hosted
-    version: "4.2.1"
+    version: "4.3.3"
   event_db:
     dependency: "direct main"
     description:
@@ -277,18 +277,18 @@ packages:
     dependency: "direct main"
     description:
       name: google_sign_in
-      sha256: "750d08ffb4cd469f13068d15844ffd1d60c7ac1ca3c815918ba4ce4af22a2ddb"
+      sha256: "776a4c988dc179c3b8e9201de0ad61bf350a4e75d378ff9d94c76880378c7bca"
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.2"
+    version: "6.1.0"
   google_sign_in_android:
     dependency: transitive
     description:
       name: google_sign_in_android
-      sha256: "6a740e8498920ecf5fc2849ae0e4412536d700230bc3169493a1d031fdfe1cca"
+      sha256: "2efe7a35f8542b94f240661ef888ae74fcbdb1886908a6aac54404e2268be73c"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.8"
+    version: "6.1.9"
   google_sign_in_ios:
     dependency: transitive
     description:
@@ -301,18 +301,18 @@ packages:
     dependency: transitive
     description:
       name: google_sign_in_platform_interface
-      sha256: fece762f0d2dd762ebde43ad70662a209ff6ee034111976549c392f7763d9264
+      sha256: "95a9e0a8701b5485f2ca330fd1fc6f918f5ce088042ce1019c5e389d8574ae4c"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.1"
+    version: "2.4.0"
   google_sign_in_web:
     dependency: transitive
     description:
       name: google_sign_in_web
-      sha256: "9f883b9b525297663510dfbbe8b04d39715aa0abba430851f501b7d1e4b0f465"
+      sha256: "7e0ec507f4752383a6daa67d0cc775253cfc3b1d87907e7004e2c1b99c0a723f"
       url: "https://pub.dev"
     source: hosted
-    version: "0.11.0+2"
+    version: "0.12.0"
   hive:
     dependency: transitive
     description:
@@ -357,10 +357,10 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: a3715e3bc90294e971cb7dc063fbf3cd9ee0ebf8604ffeafabd9e6f16abbdbe6
+      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
       url: "https://pub.dev"
     source: hosted
-    version: "0.18.0"
+    version: "0.18.1"
   js:
     dependency: transitive
     description:
@@ -445,18 +445,18 @@ packages:
     dependency: transitive
     description:
       name: path_provider_android
-      sha256: "019f18c9c10ae370b08dce1f3e3b73bc9f58e7f087bb5e921f06529438ac0ae7"
+      sha256: da97262be945a72270513700a92b39dd2f4a54dad55d061687e2e37a6390366a
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.24"
+    version: "2.0.25"
   path_provider_foundation:
     dependency: transitive
     description:
       name: path_provider_foundation
-      sha256: "818b2dc38b0f178e0ea3f7cf3b28146faab11375985d815942a68eee11c2d0f7"
+      sha256: ad4c4d011830462633f03eb34445a45345673dfd4faf1ab0b4735fbd93b19183
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.1"
+    version: "2.2.2"
   path_provider_linux:
     dependency: transitive
     description:
@@ -594,10 +594,10 @@ packages:
     dependency: "direct main"
     description:
       name: timezone
-      sha256: "24c8fcdd49a805d95777a39064862133ff816ebfffe0ceff110fb5960e557964"
+      sha256: "1cfd8ddc2d1cfd836bc93e67b9be88c3adaeca6f40a00ca999104c30693cdca0"
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.1"
+    version: "0.9.2"
   tuple:
     dependency: "direct main"
     description:
@@ -642,18 +642,18 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_android
-      sha256: dd729390aa936bf1bdf5cd1bc7468ff340263f80a2c4f569416507667de8e3c8
+      sha256: a52628068d282d01a07cd86e6ba99e497aa45ce8c91159015b2416907d78e411
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.26"
+    version: "6.0.27"
   url_launcher_ios:
     dependency: transitive
     description:
       name: url_launcher_ios
-      sha256: "3dedc66ca3c0bef9e6a93c0999aee102556a450afcc1b7bcfeace7a424927d92"
+      sha256: "9af7ea73259886b92199f9e42c116072f05ff9bea2dcb339ab935dfc957392c2"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.3"
+    version: "6.1.4"
   url_launcher_linux:
     dependency: transitive
     description:
@@ -666,10 +666,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_macos
-      sha256: "0ef2b4f97942a16523e51256b799e9aa1843da6c60c55eefbfa9dbc2dcb8331a"
+      sha256: "91ee3e75ea9dadf38036200c5d3743518f4a5eb77a8d13fda1ee5764373f185e"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.4"
+    version: "3.0.5"
   url_launcher_platform_interface:
     dependency: transitive
     description:
@@ -722,10 +722,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: c9ebe7ee4ab0c2194e65d3a07d8c54c5d00bb001b76081c4a04cdb8448b59e46
+      sha256: a6f0236dbda0f63aa9a25ad1ff9a9d8a4eaaa5012da0dc59d21afdb1dc361ca4
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.3"
+    version: "3.1.4"
   xdg_directories:
     dependency: transitive
     description:

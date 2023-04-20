@@ -7,4 +7,6 @@ final typeAdapters = <GenericTypeAdapter>[
   GenericTypeAdapter<UnlockedThemes>(UnlockedThemes.new, (_) => 2),
   GenericTypeAdapter<BookmarkCollectionModel>(
       BookmarkCollectionModel.new, (_) => 3),
+  GenericTypeAdapter<ProfileModel>(ProfileModel.new, (_) => 4),
+  GenericTypeAdapter<BookmarkShareInfo>(BookmarkShareInfo.new, (_) => 5),
 ];
