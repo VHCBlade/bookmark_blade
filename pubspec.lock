@@ -30,7 +30,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: eb1f6a25046850a3d3f4aa01aeff53f686dee9d0
+      resolved-ref: "15c8463b8c74f25b286c1f17b65fd954f208b3a4"
       url: "git@github.com:VHCBlade/bookmark_models.git"
     source: git
     version: "1.0.0"
@@ -285,10 +285,10 @@ packages:
     dependency: transitive
     description:
       name: google_sign_in_android
-      sha256: "2efe7a35f8542b94f240661ef888ae74fcbdb1886908a6aac54404e2268be73c"
+      sha256: "8e46e791f54ce83c05dcc41430bba943c3aafc49b9b867c4d10b395968398b4a"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.9"
+    version: "6.1.11"
   google_sign_in_ios:
     dependency: transitive
     description:
@@ -338,7 +338,7 @@ packages:
     source: hosted
     version: "0.15.2"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       sha256: "6aa2946395183537c8b880962d935877325d6a09a2867c3970c05c0fed6ac482"

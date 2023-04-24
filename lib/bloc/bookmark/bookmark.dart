@@ -45,7 +45,7 @@ class BookmarkBloc extends Bloc {
   Stream<int> get addedBookmarkCollectionIndex =>
       _addedBookmarkCollectionIndex.stream;
   Stream<Tuple2<int, BookmarkCollectionModel>>
-      get removeddBookmarkCollectionIndex =>
+      get removedBookmarkCollectionIndex =>
           _removeddBookmarkCollectionIndex.stream;
 
   BookmarkCollectionModel? bookmarkCollectionAt(int position) =>

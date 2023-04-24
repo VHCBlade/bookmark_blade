@@ -8,5 +8,8 @@ final typeAdapters = <GenericTypeAdapter>[
   GenericTypeAdapter<BookmarkCollectionModel>(
       BookmarkCollectionModel.new, (_) => 3),
   GenericTypeAdapter<ProfileModel>(ProfileModel.new, (_) => 4),
-  GenericTypeAdapter<BookmarkShareInfo>(BookmarkShareInfo.new, (_) => 5),
+  GenericTypeAdapter<OutgoingBookmarkShareInfo>(
+      OutgoingBookmarkShareInfo.new, (_) => 5),
+  GenericTypeAdapter<IncomingBookmarkShareInfo>(
+      IncomingBookmarkShareInfo.new, (_) => 6),
 ];

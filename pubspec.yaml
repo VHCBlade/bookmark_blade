@@ -47,6 +47,7 @@ dependencies:
   google_sign_in: ^6.0.2
   # google_mobile_ads: ^2.3.0
   
+  http: ^0.13.0
   intl: ^0.18.0
   math_parser: ^1.5.0
   provider: ^6.0.0
