@@ -15,6 +15,9 @@ enum BookmarkEvent<T> {
   addBookmark<BookmarkModel>(),
   updateBookmark<BookmarkModel>(),
   reorderBookmarks<ListMovement<BookmarkModel>>(),
+
+  // Share
+  shareBookmarkCollection<BookmarkCollectionModel>(),
   ;
 
   BlocEventType<T> get event => BlocEventType.fromObject(this);

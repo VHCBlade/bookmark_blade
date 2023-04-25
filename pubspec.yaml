@@ -21,7 +21,7 @@ dependencies:
 
   event_essay: ^0.1.1
   event_bloc: ^4.2.0
-  event_db: ^0.1.6
+  event_db: ^0.1.7
   # event_db:
   #   path: ../event_db
   event_hive: ^0.1.3
@@ -53,6 +53,7 @@ dependencies:
   provider: ^6.0.0
   timezone: ^0.9.1
   tuple: ^2.0.0
+  fluttertoast: ^8.2.1
 
   url_launcher: ^6.1.10
   uuid: ^3.0.7

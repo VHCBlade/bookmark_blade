@@ -2,6 +2,7 @@ import 'package:bookmark_blade/bloc/bookmark/bookmark.dart';
 import 'package:bookmark_blade/bloc/bookmark/edit.dart';
 import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/ui/bookmark/bookmark_modal.dart';
+import 'package:bookmark_blade/ui/bookmark/share_collection.dart';
 import 'package:bookmark_models/bookmark_models.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:event_db/event_db.dart';
@@ -41,7 +42,17 @@ class EditBookmarkCollectionScreen extends StatelessWidget {
         leading: const BlocBackButton(),
         title: Text(bloc.model?.bookmarkName ?? "Unknown"),
         actions: [
-          if (bloc.hasModel)
+          if (bloc.hasModel) ...[
+            IconButton(
+                onPressed: () {
+                  context.fireEvent(
+                      BookmarkEvent.shareBookmarkCollection.event, bloc.model!);
+                  showDialog(
+                      context: context,
+                      builder: (_) =>
+                          ShareCollectionDialog(model: bloc.model!));
+                },
+                icon: const Icon(Icons.share)),
             IconButton(
                 onPressed: () => showEventDialog<String>(
                       context: context,
@@ -54,6 +65,7 @@ class EditBookmarkCollectionScreen extends StatelessWidget {
                       ),
                     ),
                 icon: const Icon(Icons.edit)),
+          ]
         ],
       ),
       floatingActionButton: FloatingActionButton(

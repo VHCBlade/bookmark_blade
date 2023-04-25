@@ -15,6 +15,9 @@ final repositoryBuilders = [
   RepositoryBuilder<TextRepository>((read) => DefaultTextRepository()),
   RepositoryBuilder<UrlLauncherRepository>((read) => UrlLauncherRepository()),
   RepositoryBuilder<APIRepository>(
-      // You need to create a local.dart file with const site = "localhost:8080" or an equivalent to run.
-      (read) => ServerAPIRepository(kDebugMode ? local.site : site.site)),
+      // You need to create a local.dart file with const site = "localhost:8080", or an equivalent to run.
+      (read) => ServerAPIRepository(
+            apiServer: kDebugMode ? local.site : site.site,
+            website: site.website,
+          )),
 ];

@@ -31,6 +31,7 @@ final blocBuilders = [
         database: read.read<DatabaseRepository>(),
         removedBookmarkStream:
             read.read<BookmarkBloc>().removedBookmarkCollectionIndex,
+        bloc: read.read<ProfileBloc>(),
       )),
   BlocBuilder<ShareBookmarkDeleteQueue>(
       (read, channel) => ShareBookmarkDeleteQueue(
