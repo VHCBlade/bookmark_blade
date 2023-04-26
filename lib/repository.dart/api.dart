@@ -43,9 +43,6 @@ class ServerAPIRepository extends APIRepository {
 
   @override
   String createShareLink(String id) {
-    if (kDebugMode) {
-      return "${apiServer}bookmarks/$id";
-    }
     return "${website}import/$id";
   }
 }

@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:bookmark_blade/bloc/profile.dart';
 import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/repository.dart/api.dart';
-import 'package:bookmark_models/bookmark_models.dart';
 import 'package:bookmark_models/bookmark_requests.dart';
 import 'package:event_bloc/event_bloc.dart';
 import 'package:event_db/event_db.dart';
@@ -12,8 +11,8 @@ import 'package:tuple/tuple.dart';
 
 import '../external_bookmark.dart';
 
-class ShareBookmarkBloc extends Bloc {
-  ShareBookmarkBloc({
+class OutgoingShareBookmarkBloc extends Bloc {
+  OutgoingShareBookmarkBloc({
     required super.parentChannel,
     required this.database,
     required this.removedBookmarkStream,
@@ -69,8 +68,6 @@ class ShareBookmarkBloc extends Bloc {
 
     final response = await api.request("POST", "bookmarks",
         (request) => request.body = json.encode(shareRequest.toMap()));
-
-    print(await response.body);
 
     switch (response.statusCode) {
       case 200:

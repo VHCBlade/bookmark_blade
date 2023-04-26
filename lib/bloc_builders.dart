@@ -1,12 +1,11 @@
 import 'package:bookmark_blade/bloc/bookmark/bookmark.dart';
 import 'package:bookmark_blade/bloc/bookmark/delete_share.dart';
 import 'package:bookmark_blade/bloc/bookmark/edit.dart';
-import 'package:bookmark_blade/bloc/bookmark/share.dart';
+import 'package:bookmark_blade/bloc/bookmark/outgoing_share.dart';
 import 'package:bookmark_blade/bloc/external_bookmark.dart';
 import 'package:bookmark_blade/bloc/navigation/navigation.dart';
 import 'package:bookmark_blade/bloc/profile.dart';
 import 'package:bookmark_blade/repository.dart/api.dart';
-import 'package:bookmark_models/bookmark_requests.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:event_db/event_db.dart';
 import 'package:event_navigation/event_navigation.dart';
@@ -25,17 +24,18 @@ final blocBuilders = [
   BlocBuilder<BookmarkEditBloc>((read, channel) => BookmarkEditBloc(
         parentChannel: channel,
       )),
-  BlocBuilder<ShareBookmarkBloc>((read, channel) => ShareBookmarkBloc(
-        parentChannel: channel,
-        api: read.read<APIRepository>(),
-        database: read.read<DatabaseRepository>(),
-        removedBookmarkStream:
-            read.read<BookmarkBloc>().removedBookmarkCollectionIndex,
-        bloc: read.read<ProfileBloc>(),
-      )),
+  BlocBuilder<OutgoingShareBookmarkBloc>(
+      (read, channel) => OutgoingShareBookmarkBloc(
+            parentChannel: channel,
+            api: read.read<APIRepository>(),
+            database: read.read<DatabaseRepository>(),
+            removedBookmarkStream:
+                read.read<BookmarkBloc>().removedBookmarkCollectionIndex,
+            bloc: read.read<ProfileBloc>(),
+          )),
   BlocBuilder<ShareBookmarkDeleteQueue>(
       (read, channel) => ShareBookmarkDeleteQueue(
             parentChannel: channel,
-            bloc: read.read<ShareBookmarkBloc>(),
+            bloc: read.read<OutgoingShareBookmarkBloc>(),
           )),
 ];

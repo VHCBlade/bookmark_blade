@@ -1,4 +1,5 @@
 import 'package:bookmark_blade/bloc/navigation/bookmark.dart';
+import 'package:bookmark_blade/bloc/navigation/import.dart';
 import 'package:bookmark_blade/bloc/navigation/settings.dart';
 import 'package:event_navigation/event_navigation.dart';
 import 'package:event_bloc/event_bloc.dart';
@@ -26,6 +27,7 @@ MainNavigationBloc<String> generateNavigationBloc(
   bloc.deepNavigationStrategyMap["settings"] = SettingsDeepNavigationStrategy();
   bloc.deepNavigationStrategyMap["bookmark"] = BookmarkDeepNavigationStrategy();
   bloc.deepNavigationStrategyMap["external"] = BookmarkDeepNavigationStrategy();
+  bloc.deepNavigationStrategyMap["import"] = ImportDeepNavigationStrategy();
 
   return bloc;
 }

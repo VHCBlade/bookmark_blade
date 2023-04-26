@@ -6,6 +6,9 @@ enum ExternalBookmarkEvent<T> {
   addBookmarkCollection<BookmarkCollectionModel>(),
   updateBookmarkCollection<BookmarkCollectionModel>(),
   deleteBookmarkCollection<BookmarkCollectionModel>(),
+
+  // Share
+  importBookmarkCollection<String>(),
   ;
 
   BlocEventType<T> get event => BlocEventType.fromObject(this);

@@ -16,7 +16,7 @@ class ShareCollectionDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.watchBloc<ShareBookmarkBloc>();
+    final bloc = context.watchBloc<OutgoingShareBookmarkBloc>();
     final shareInfo = bloc.shareInfoOfCollection(model);
 
     if (shareInfo == null) {
