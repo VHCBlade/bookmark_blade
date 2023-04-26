@@ -66,6 +66,7 @@ class IncomingShareBookmarkBloc extends Bloc {
       if (await updateShare(currentShareInfo)) {
         updateBloc();
       }
+      return;
     }
 
     currentImports++;
@@ -78,9 +79,16 @@ class IncomingShareBookmarkBloc extends Bloc {
 
     currentImports--;
 
-    if (response.statusCode != 200) {
-      updateBloc();
-      return;
+    switch (response.statusCode) {
+      case 200:
+        break;
+      case 404:
+        updateBloc();
+        return;
+      case 400:
+      default:
+        updateBloc();
+        return;
     }
 
     final syncData = BookmarkSyncData()

@@ -1,4 +1,4 @@
-import 'package:bookmark_blade/bloc/bookmark/share.dart';
+import 'package:bookmark_blade/bloc/bookmark/outgoing_share.dart';
 import 'package:bookmark_models/bookmark_models.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:flutter/material.dart';

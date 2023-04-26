@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:event_bloc/event_bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
 extension FutureResponse on StreamedResponse {
@@ -33,12 +33,19 @@ class ServerAPIRepository extends APIRepository {
   List<BlocEventListener> generateListeners(BlocEventChannel channel) => [];
 
   @override
-  Future<StreamedResponse> request(
-      String method, String urlSuffix, void Function(Request) addToRequest) {
+  Future<StreamedResponse> request(String method, String urlSuffix,
+      void Function(Request) addToRequest) async {
     final fullUrl = "$apiServer$urlSuffix";
     final request = Request(method, Uri.parse(fullUrl));
     addToRequest(request);
-    return client.send(request);
+    try {
+      return await client.send(request);
+    } on Object {
+      return StreamedResponse(
+          Stream.fromIterable(
+              [utf8.encode("Unable to connect to the server...")]),
+          504);
+    }
   }
 
   @override

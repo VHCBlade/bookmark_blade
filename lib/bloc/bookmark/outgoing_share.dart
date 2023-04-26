@@ -11,6 +11,10 @@ import 'package:tuple/tuple.dart';
 
 import '../external_bookmark.dart';
 
+extension OutgoingId on BookmarkCollectionModel {
+  String? get outgoingId => (OutgoingBookmarkShareInfo()..idSuffix = id).id;
+}
+
 class OutgoingShareBookmarkBloc extends Bloc {
   OutgoingShareBookmarkBloc({
     required super.parentChannel,
@@ -52,8 +56,8 @@ class OutgoingShareBookmarkBloc extends Bloc {
   }
 
   void initialShareBookmark(BookmarkCollectionModel collectionModel) async {
-    if (shareBookmarkMap.map.containsKey(collectionModel.id)) {
-      final info = shareBookmarkMap.map[collectionModel.id]!;
+    if (shareBookmarkMap.map.containsKey(collectionModel.outgoingId)) {
+      final info = shareBookmarkMap.map[collectionModel.outgoingId]!;
       info.shouldBeDeleted = false;
       await shareBookmarkMap.specificDatabase().saveModel(info);
 
@@ -87,8 +91,7 @@ class OutgoingShareBookmarkBloc extends Bloc {
 
   OutgoingBookmarkShareInfo? shareInfoOfCollection(
       BookmarkCollectionModel model) {
-    final id = (OutgoingBookmarkShareInfo()..idSuffix = model.id!).id;
-    return shareBookmarkMap.map[id];
+    return shareBookmarkMap.map[model.outgoingId];
   }
 
   void deleteBookmark(BookmarkCollectionModel collectionModel) async {

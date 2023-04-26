@@ -1,6 +1,6 @@
 import 'package:event_bloc/event_bloc.dart';
 
-enum BookmarkEvent<T> {
+enum AlertEvent<T> {
   alert<String>(),
   error<String>(),
   warning<String>(),
