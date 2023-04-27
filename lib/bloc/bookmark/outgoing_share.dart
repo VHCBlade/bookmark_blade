@@ -52,6 +52,7 @@ class OutgoingShareBookmarkBloc extends Bloc {
   }
 
   String shareLink(BookmarkCollectionModel model) {
+    print(api.createShareLink(model.idSuffix!));
     return api.createShareLink(model.idSuffix!);
   }
 
@@ -84,7 +85,7 @@ class OutgoingShareBookmarkBloc extends Bloc {
     }
 
     final shareInfo = OutgoingBookmarkShareInfo.fromCollection(collectionModel);
-    shareBookmarkMap.addModel(shareInfo);
+    await shareBookmarkMap.addModel(shareInfo);
     attemptingToAdd = false;
     updateBloc();
   }

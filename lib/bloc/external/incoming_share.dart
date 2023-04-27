@@ -1,13 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:bookmark_blade/bloc/external/external_bookmark.dart';
+import 'package:bookmark_blade/events/alert.dart';
 import 'package:bookmark_blade/events/external_bookmark.dart';
 import 'package:bookmark_blade/repository.dart/api.dart';
 import 'package:bookmark_models/bookmark_requests.dart';
 import 'package:event_bloc/event_bloc.dart';
 import 'package:event_db/event_db.dart';
 
-import '../external_bookmark.dart';
+class ShareLink {
+  final String fullLink;
+
+  const ShareLink(this.fullLink);
+
+  bool get isValid => id.isNotEmpty;
+  String get id => fullLink.split("/").last.trim();
+}
 
 class IncomingShareBookmarkBloc extends Bloc {
   IncomingShareBookmarkBloc({
@@ -32,7 +41,7 @@ class IncomingShareBookmarkBloc extends Bloc {
 
   late final shareBookmarkMap = GenericModelMap(
     repository: () => database,
-    defaultDatabaseName: bookmarkDb,
+    defaultDatabaseName: externalBookmarkDB,
     supplier: IncomingBookmarkShareInfo.new,
   );
 
@@ -82,11 +91,16 @@ class IncomingShareBookmarkBloc extends Bloc {
     switch (response.statusCode) {
       case 200:
         break;
-      case 404:
+      case 504:
+        eventChannel.fireEvent(AlertEvent.noInternetAccess.event, null);
         updateBloc();
         return;
-      case 400:
+      case 404:
       default:
+        eventChannel.fireEvent(
+            AlertEvent.error.event,
+            "We couldn't find the bookmark collection for this link. The original sharer may have"
+            " deleted it, or they may be something wrong with your link.");
         updateBloc();
         return;
     }

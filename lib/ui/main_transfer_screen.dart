@@ -3,6 +3,8 @@ import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:event_navigation/event_navigation.dart';
 import 'package:flutter/material.dart';
 
+import 'import/main.dart';
+
 class MainTransferScreen extends StatelessWidget {
   const MainTransferScreen({Key? key}) : super(key: key);
 
@@ -53,6 +55,8 @@ class MainCarouselScreen extends StatelessWidget {
           switch (navigation) {
             case "bookmark":
               return const BookmarkScreen();
+            case "import":
+              return const MainImportScreen();
             default:
               return Container();
           }
