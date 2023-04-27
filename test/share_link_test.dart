@@ -35,8 +35,8 @@ void idTest() {
   final tester = SerializableListTester<List<String>>(
     testGroupName: "Share Link",
     mainTestName: "Id",
-    mode: ListTesterMode.generateOutput,
-    // mode: ListTesterMode.testOutput,
+    // mode: ListTesterMode.generateOutput,
+    mode: ListTesterMode.testOutput,
     testFunction: (value, tester) {
       value.forEach((val) {
         tester.addTestValue(val);
@@ -53,8 +53,8 @@ void isValidTest() {
   final tester = SerializableListTester<List<String>>(
     testGroupName: "Share Link",
     mainTestName: "isValid",
-    mode: ListTesterMode.generateOutput,
-    // mode: ListTesterMode.testOutput,
+    // mode: ListTesterMode.generateOutput,
+    mode: ListTesterMode.testOutput,
     testFunction: (value, tester) {
       value.forEach((val) {
         tester.addTestValue(val);

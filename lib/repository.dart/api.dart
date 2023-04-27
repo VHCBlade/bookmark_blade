@@ -7,6 +7,9 @@ import 'package:http/http.dart';
 extension FutureResponse on StreamedResponse {
   Future<String> get body async => (await stream.toStringStream().toList())
       .reduce((value, element) => "$value$element");
+
+  Future<Map<String, dynamic>> get bodyAsMap async =>
+      json.decode(await body) as Map<String, dynamic>;
 }
 
 Stream<List<int>> stringToStream(String str) async* {

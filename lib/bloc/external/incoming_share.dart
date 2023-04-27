@@ -63,8 +63,51 @@ class IncomingShareBookmarkBloc extends Bloc {
         ..idSuffix = (BookmarkCollectionModel()..idSuffix = id).id)
       .id!;
 
-  Future<bool> updateShare(IncomingBookmarkShareInfo info) {
-    throw UnimplementedError();
+  Future<bool> updateShare(IncomingBookmarkShareInfo info) async {
+    final syncRequest = BookmarkSyncRequest()
+      ..collectionId = info.idSuffix!
+      ..lastUpdated = info.lastUpdated;
+
+    final response = await api.request("GET", "bookmarks/${info.idSuffix!}",
+        (request) => request.body = json.encode(syncRequest.toMap()));
+
+    switch (response.statusCode) {
+      case 200:
+        break;
+      case 504:
+        eventChannel.fireEvent(AlertEvent.noInternetAccess.event, null);
+        updateBloc();
+        return false;
+      case 404:
+      default:
+        eventChannel.fireEvent(
+            AlertEvent.error.event,
+            "We couldn't find an update for the bookmark collection for this link. The original sharer may have"
+            " deleted it.");
+        updateBloc();
+        return false;
+    }
+
+    final bodyMap = await response.bodyAsMap;
+    print(bodyMap);
+    print(BookmarkSyncData()..loadFromMap(bodyMap));
+    final syncData = BookmarkSyncData()..loadFromMap(bodyMap);
+
+    if (!syncData.updated) {
+      return false;
+    }
+
+    info.lastUpdated = syncData.lastUpdated;
+    shareBookmarkMap.specificDatabase().saveModel(info);
+    eventChannel.fireEvent(ExternalBookmarkEvent.updateBookmarkCollection.event,
+        syncData.collectionModel);
+
+    return true;
+  }
+
+  IncomingBookmarkShareInfo? fromId(String id) {
+    final String fullId = createFullId(id);
+    return shareBookmarkMap.map[fullId];
   }
 
   void importBookmark(String id) async {
@@ -84,7 +127,9 @@ class IncomingShareBookmarkBloc extends Bloc {
     final syncRequest = BookmarkSyncRequest()..collectionId = id;
 
     final response = await api.request("GET", "bookmarks/$id",
-        (request) => request.body = json.encode(syncRequest));
+        (request) => request.body = json.encode(syncRequest.toMap()));
+
+    print(response.statusCode);
 
     currentImports--;
 
@@ -105,14 +150,14 @@ class IncomingShareBookmarkBloc extends Bloc {
         return;
     }
 
-    final syncData = BookmarkSyncData()
-      ..loadFromMap(json.encode(await response.body) as Map<String, dynamic>);
+    final syncData = BookmarkSyncData()..loadFromMap(await response.bodyAsMap);
     final newShareInfo = IncomingBookmarkShareInfo()
       ..id = fullId
       ..lastUpdated = syncData.lastUpdated;
+    shareBookmarkMap.addModel(newShareInfo);
 
-    eventChannel.fireEvent(
-        ExternalBookmarkEvent.addBookmarkCollection.event, newShareInfo);
+    eventChannel.fireEvent(ExternalBookmarkEvent.addBookmarkCollection.event,
+        syncData.collectionModel);
     updateBloc();
   }
 }

@@ -30,10 +30,27 @@ class _ImportScreenState extends State<ImportScreen> {
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
             child:
                 Text("Use Link", style: Theme.of(context).textTheme.titleLarge),
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: TextField(
+              controller: controller,
+              textInputAction: TextInputAction.go,
+              onSubmitted: (val) => openLink(ShareLink(val), context),
+              onChanged: (_) => setState(() {}),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: ElevatedButton(
+                onPressed: ShareLink(controller.text).isValid
+                    ? () => openLink(ShareLink(controller.text), context)
+                    : null,
+                child: const Text("Import with Link")),
+          ),
         ],
       ),
     );

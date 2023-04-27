@@ -30,7 +30,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: f6970ed093a9a7dd7cffea9b7fa757d3c1e293ef
+      resolved-ref: b90ec40f1e703a744f6a914ffc86a6dfa96ac5dd
       url: "git@github.com:VHCBlade/bookmark_models.git"
     source: git
     version: "1.0.0"
@@ -142,10 +142,10 @@ packages:
     dependency: "direct main"
     description:
       name: event_db
-      sha256: "99d212ebb4eb5d7d8e246c1c61f60d6405cdcd31c716d8d2c2decb4afd903ebb"
+      sha256: "8781082863016cdcebacae5ae060724132544657ada5809d2261d04aae10d17e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.7"
+    version: "0.1.8"
   event_essay:
     dependency: "direct main"
     description:
