@@ -1,7 +1,9 @@
+import 'package:bookmark_blade/bloc/alert_bloc.dart';
 import 'package:bookmark_blade/bloc/bookmark/bookmark.dart';
 import 'package:bookmark_blade/bloc/bookmark/delete_share.dart';
 import 'package:bookmark_blade/bloc/bookmark/edit.dart';
 import 'package:bookmark_blade/bloc/bookmark/outgoing_share.dart';
+import 'package:bookmark_blade/bloc/external/incoming_share.dart';
 import 'package:bookmark_blade/bloc/external_bookmark.dart';
 import 'package:bookmark_blade/bloc/navigation/navigation.dart';
 import 'package:bookmark_blade/bloc/profile.dart';
@@ -11,6 +13,7 @@ import 'package:event_db/event_db.dart';
 import 'package:event_navigation/event_navigation.dart';
 
 final blocBuilders = [
+  BlocBuilder<AlertBloc>((read, channel) => AlertBloc(parentChannel: channel)),
   BlocBuilder<ProfileBloc>((read, channel) => ProfileBloc(
       parentChannel: channel, database: read.read<DatabaseRepository>())),
   BlocBuilder<MainNavigationBloc<String>>(
@@ -32,6 +35,12 @@ final blocBuilders = [
             removedBookmarkStream:
                 read.read<BookmarkBloc>().removedBookmarkCollectionIndex,
             bloc: read.read<ProfileBloc>(),
+          )),
+  BlocBuilder<IncomingShareBookmarkBloc>(
+      (read, channel) => IncomingShareBookmarkBloc(
+            parentChannel: channel,
+            api: read.read<APIRepository>(),
+            database: read.read<DatabaseRepository>(),
           )),
   BlocBuilder<ShareBookmarkDeleteQueue>(
       (read, channel) => ShareBookmarkDeleteQueue(
