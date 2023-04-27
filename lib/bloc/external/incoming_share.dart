@@ -89,8 +89,6 @@ class IncomingShareBookmarkBloc extends Bloc {
     }
 
     final bodyMap = await response.bodyAsMap;
-    print(bodyMap);
-    print(BookmarkSyncData()..loadFromMap(bodyMap));
     final syncData = BookmarkSyncData()..loadFromMap(bodyMap);
 
     if (!syncData.updated) {
@@ -128,8 +126,6 @@ class IncomingShareBookmarkBloc extends Bloc {
 
     final response = await api.request("GET", "bookmarks/$id",
         (request) => request.body = json.encode(syncRequest.toMap()));
-
-    print(response.statusCode);
 
     currentImports--;
 

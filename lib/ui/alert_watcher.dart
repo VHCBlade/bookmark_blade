@@ -19,7 +19,9 @@ class _AlertWatcherState extends State<AlertWatcher> {
   @override
   void initState() {
     super.initState();
-    subscription = context.readBloc<AlertBloc>().stream.listen((event) {});
+    subscription = context.readBloc<AlertBloc>().stream.listen((event) =>
+        showDialog(
+            context: context, builder: (_) => AlertInfoDialog(info: event)));
   }
 
   @override

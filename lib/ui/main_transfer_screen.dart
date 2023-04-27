@@ -1,3 +1,4 @@
+import 'package:bookmark_blade/ui/alert_watcher.dart';
 import 'package:bookmark_blade/ui/bookmark/main.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:event_navigation/event_navigation.dart';
@@ -37,10 +38,11 @@ class MainTransferScreen extends StatelessWidget {
       ),
     );
 
-    return Scaffold(
+    return AlertWatcher(
+        child: Scaffold(
       bottomNavigationBar: navigationBar,
       body: const MainCarouselScreen(),
-    );
+    ));
   }
 }
 
