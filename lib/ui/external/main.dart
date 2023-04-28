@@ -1,4 +1,5 @@
 import 'package:bookmark_blade/ui/external/collection_list.dart';
+import 'package:bookmark_blade/ui/external/view_collection.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:event_navigation/event_navigation.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class ExternalBookmarkScreen extends StatelessWidget {
       return const ExternalBookmarkCollectionListScreen();
     }
 
-    return const ExternalBookmarkCollectionListScreen();
+    return const ExternalBookmarkCollectionScreen();
   }
 
   @override

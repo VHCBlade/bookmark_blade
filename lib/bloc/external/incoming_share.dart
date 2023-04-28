@@ -71,7 +71,7 @@ class IncomingShareBookmarkBloc extends Bloc {
       ..collectionId = info.idSuffix!
       ..lastUpdated = info.lastUpdated;
 
-    final response = await api.request("GET", "bookmarks/${info.idSuffix!}",
+    final response = await api.request("POST", "bookmarks/${info.idSuffix!}",
         (request) => request.body = json.encode(syncRequest.toMap()));
 
     switch (response.statusCode) {
@@ -137,7 +137,7 @@ class IncomingShareBookmarkBloc extends Bloc {
 
     final syncRequest = BookmarkSyncRequest()..collectionId = id;
 
-    final response = await api.request("GET", "bookmarks/$id",
+    final response = await api.request("POST", "bookmarks/$id",
         (request) => request.body = json.encode(syncRequest.toMap()));
 
     currentImports--;

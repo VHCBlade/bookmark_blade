@@ -8,6 +8,7 @@ enum ExternalBookmarkEvent<T> {
   updateBookmarkCollection<BookmarkCollectionModel>(),
   deleteBookmarkCollection<BookmarkCollectionModel>(),
   reorderBookmarkCollections<ListMovement<BookmarkCollectionModel>>(),
+  selectBookmarkCollection<BookmarkCollectionModel?>(),
 
   // Share
   importBookmarkCollection<String>(),

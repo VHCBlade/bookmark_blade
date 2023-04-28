@@ -26,7 +26,15 @@ class ExternalBookmarkBloc extends Bloc {
     eventChannel.addEventListener(
         ExternalBookmarkEvent.reorderBookmarkCollections.event,
         (event, value) => reorderBookmarkCollection(value.moved, value.to));
+    eventChannel.addEventListener(
+        ExternalBookmarkEvent.selectBookmarkCollection.event, (event, value) {
+      selected = value;
+      updateBloc();
+    });
   }
+
+  BookmarkCollectionModel? selected;
+  bool get hasSelected => selected != null;
 
   final DatabaseRepository databaseRepository;
   late final database =
@@ -58,7 +66,6 @@ class ExternalBookmarkBloc extends Bloc {
 
   Future<void> loadAll() async {
     final bookmarks = await bookmarkMap.loadAll();
-    print(bookmarks);
     bookmarkList.generateList(bookmarks);
     bookmarks
         .map((e) => bookmarkList.list.indexOf(e.id!))

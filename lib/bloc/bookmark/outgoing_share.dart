@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bookmark_blade/bloc/bookmark/bookmark.dart';
-import 'package:bookmark_blade/bloc/external/external_bookmark.dart';
 import 'package:bookmark_blade/bloc/profile.dart';
 import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/repository.dart/api.dart';
@@ -52,7 +51,6 @@ class OutgoingShareBookmarkBloc extends Bloc {
   }
 
   String shareLink(BookmarkCollectionModel model) {
-    print(api.createShareLink(model.idSuffix!));
     return api.createShareLink(model.idSuffix!);
   }
 

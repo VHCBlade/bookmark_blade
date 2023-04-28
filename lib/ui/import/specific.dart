@@ -1,6 +1,5 @@
 import 'package:bookmark_blade/bloc/external/incoming_share.dart';
 import 'package:bookmark_blade/events/external_bookmark.dart';
-import 'package:bookmark_models/bookmark_models.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:event_navigation/event_navigation.dart';
 import 'package:flutter/material.dart';
