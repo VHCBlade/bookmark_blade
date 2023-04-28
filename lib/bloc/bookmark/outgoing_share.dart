@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:bookmark_blade/bloc/bookmark/bookmark.dart';
+import 'package:bookmark_blade/bloc/external/external_bookmark.dart';
 import 'package:bookmark_blade/bloc/profile.dart';
 import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/repository.dart/api.dart';
@@ -8,8 +10,6 @@ import 'package:bookmark_models/bookmark_requests.dart';
 import 'package:event_bloc/event_bloc.dart';
 import 'package:event_db/event_db.dart';
 import 'package:tuple/tuple.dart';
-
-import '../external_bookmark.dart';
 
 extension OutgoingId on BookmarkCollectionModel {
   String? get outgoingId => (OutgoingBookmarkShareInfo()..idSuffix = id).id;

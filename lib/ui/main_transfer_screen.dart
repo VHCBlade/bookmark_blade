@@ -1,5 +1,6 @@
 import 'package:bookmark_blade/ui/alert_watcher.dart';
 import 'package:bookmark_blade/ui/bookmark/main.dart';
+import 'package:bookmark_blade/ui/external/main.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:event_navigation/event_navigation.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,8 @@ class MainCarouselScreen extends StatelessWidget {
               return const BookmarkScreen();
             case "import":
               return const MainImportScreen();
+            case "external":
+              return const ExternalBookmarkScreen();
             default:
               return Container();
           }

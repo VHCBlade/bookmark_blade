@@ -4,13 +4,14 @@ import 'package:bookmark_blade/bloc/bookmark/delete_share.dart';
 import 'package:bookmark_blade/bloc/bookmark/edit.dart';
 import 'package:bookmark_blade/bloc/bookmark/outgoing_share.dart';
 import 'package:bookmark_blade/bloc/external/incoming_share.dart';
-import 'package:bookmark_blade/bloc/external_bookmark.dart';
 import 'package:bookmark_blade/bloc/navigation/navigation.dart';
 import 'package:bookmark_blade/bloc/profile.dart';
 import 'package:bookmark_blade/repository.dart/api.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:event_db/event_db.dart';
 import 'package:event_navigation/event_navigation.dart';
+
+import 'bloc/external/external_bookmark.dart';
 
 final blocBuilders = [
   BlocBuilder<AlertBloc>((read, channel) => AlertBloc(parentChannel: channel)),

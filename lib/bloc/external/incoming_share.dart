@@ -27,6 +27,9 @@ class IncomingShareBookmarkBloc extends Bloc {
     eventChannel.addEventListener(
         ExternalBookmarkEvent.loadAll.event, (p0, p1) => loadAll());
     eventChannel.addEventListener(
+        ExternalBookmarkEvent.deleteBookmarkCollection.event,
+        (p0, p1) => deleteBookmark(p1));
+    eventChannel.addEventListener(
         ExternalBookmarkEvent.importBookmarkCollection.event,
         (p0, p1) => importBookmark(p1));
   }
@@ -46,7 +49,7 @@ class IncomingShareBookmarkBloc extends Bloc {
   );
 
   Future<void> loadAll() async {
-    await shareBookmarkMap.loadAll();
+    // await shareBookmarkMap.loadAll();
     updateBloc();
     // TODO BB-9
   }
@@ -108,6 +111,16 @@ class IncomingShareBookmarkBloc extends Bloc {
     return shareBookmarkMap.map[fullId];
   }
 
+  void deleteBookmark(BookmarkCollectionModel model) async {
+    final fullId = createFullId(model.idSuffix!);
+    final currentShareInfo = shareBookmarkMap.map[fullId];
+
+    if (currentShareInfo != null) {
+      await shareBookmarkMap.deleteModel(currentShareInfo);
+      updateBloc();
+    }
+  }
+
   void importBookmark(String id) async {
     final fullId = createFullId(id);
     final currentShareInfo = shareBookmarkMap.map[fullId];
@@ -153,7 +166,7 @@ class IncomingShareBookmarkBloc extends Bloc {
     shareBookmarkMap.addModel(newShareInfo);
 
     eventChannel.fireEvent(ExternalBookmarkEvent.addBookmarkCollection.event,
-        syncData.collectionModel);
+        syncData.collectionModel!);
     updateBloc();
   }
 }

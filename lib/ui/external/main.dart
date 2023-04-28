@@ -1,5 +1,4 @@
-import 'package:bookmark_blade/ui/bookmark/edit_collection.dart';
-import 'package:bookmark_blade/ui/bookmark/collection_list.dart';
+import 'package:bookmark_blade/ui/external/collection_list.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:event_navigation/event_navigation.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +10,11 @@ class ExternalBookmarkScreen extends StatelessWidget {
   Widget buildWidget(BuildContext context) {
     final bloc = context.watchBloc<MainNavigationBloc<String>>();
 
-    if (bloc.deepNavigationMap["bookmark"] == null) {
-      return const BookmarkCollectionListScreen();
+    if (bloc.deepNavigationMap["external"] == null) {
+      return const ExternalBookmarkCollectionListScreen();
     }
 
-    return const BookmarkCollectionScreen();
+    return const ExternalBookmarkCollectionListScreen();
   }
 
   @override
