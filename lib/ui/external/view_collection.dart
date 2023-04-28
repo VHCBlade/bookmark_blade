@@ -5,6 +5,7 @@ import 'package:bookmark_blade/ui/bookmark.dart';
 import 'package:bookmark_models/bookmark_models.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:event_db/event_db.dart';
+import 'package:event_modals/event_modals.dart';
 import 'package:event_navigation/event_navigation.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +51,39 @@ class EditBookmarkCollectionScreen extends StatelessWidget {
                 icon: const Icon(Icons.share)),
             IconButton(
                 onPressed: () {
-                  // TODO
+                  showEventDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: const Text("Copy Notice"),
+                            content: const Text(
+                                "This will copy this external bookmark into your bookmarks. This copy will no longer be related to this one, but you can edit it yourself."
+                                "The app will navigate to the copied bookmark after you copy. Would you like to continue?",
+                                textAlign: TextAlign.start),
+                            actions: [
+                              OutlinedButton(
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(true),
+                                  child: const Text("No")),
+                              ElevatedButton(
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(true),
+                                  child: const Text("Yes")),
+                            ],
+                          ),
+                      onResponse: (eventChannel, val) {
+                        if (!val) {
+                          return;
+                        }
+                        final copied = BookmarkCollectionModel()
+                          ..copy(bloc.selected!)
+                          ..id = null
+                          ..autoGenId;
+                        eventChannel.fireEvent(
+                            BookmarkEvent.addBookmarkCollection.event, copied);
+                        eventChannel.fireEvent(
+                            NavigationEvent.deepLinkNavigation.event,
+                            "bookmark/${copied.idSuffix}");
+                      });
                 },
                 icon: const Icon(Icons.copy)),
           ]
