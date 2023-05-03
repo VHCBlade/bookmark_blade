@@ -49,7 +49,7 @@ class IncomingShareBookmarkBloc extends Bloc {
   );
 
   Future<void> loadAll() async {
-    // await shareBookmarkMap.loadAll();
+    await shareBookmarkMap.loadAll();
     updateBloc();
     // TODO BB-9
   }
@@ -163,10 +163,9 @@ class IncomingShareBookmarkBloc extends Bloc {
     final newShareInfo = IncomingBookmarkShareInfo()
       ..id = fullId
       ..lastUpdated = syncData.lastUpdated;
-    shareBookmarkMap.addModel(newShareInfo);
+    shareBookmarkMap.addModel(newShareInfo).then((value) => updateBloc());
 
     eventChannel.fireEvent(ExternalBookmarkEvent.addBookmarkCollection.event,
         syncData.collectionModel!);
-    updateBloc();
   }
 }

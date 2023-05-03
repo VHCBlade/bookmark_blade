@@ -29,6 +29,11 @@ Map<String, List<String> Function()> get commonTestCases => {
             "https://bookmark.vhcblade.com/#/import/4f6574d0-1a52-444f-a9a2-146b3e2ce557",
             "https://bookmark.vhcblade.com/#/import/d2fcc3a2-611d-41bd-8562-6938c35aca9a",
           ],
+      "mailto": () => [
+            "mailto:test@example.com",
+            "mailto:123@example.com",
+            "mailto:great",
+          ],
     };
 
 void idTest() {

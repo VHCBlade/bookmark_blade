@@ -150,10 +150,10 @@ packages:
     dependency: "direct main"
     description:
       name: event_essay
-      sha256: af16312c4c1c581f1b3a80562d6deffdfcf79da3621e2b8b89d77fc45aa851d9
+      sha256: c6e43db3e8da425716531c60935a09d588e8ee4c272bb8d36ed564b71fcf55b8
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.1"
+    version: "0.1.2"
   event_hive:
     dependency: "direct main"
     description:
