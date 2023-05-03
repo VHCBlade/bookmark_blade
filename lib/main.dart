@@ -2,6 +2,7 @@ import 'package:bookmark_blade/bloc_builders.dart';
 import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/events/external_bookmark.dart';
 import 'package:bookmark_blade/events/profile.dart';
+import 'package:bookmark_blade/events/settings.dart';
 import 'package:bookmark_blade/repository_builders.dart';
 import 'package:bookmark_blade/ui/main_transfer_screen.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
@@ -63,6 +64,7 @@ class _MainScreenState extends State<MainScreen> {
     context.fireEvent<void>(ProfileEvent.load.event, null);
     context.fireEvent<void>(BookmarkEvent.loadAll.event, null);
     context.fireEvent<void>(ExternalBookmarkEvent.loadAll.event, null);
+    context.fireEvent<void>(SettingsEvent.loadSettings.event, null);
   }
 
   Widget buildWidget(BuildContext context) {

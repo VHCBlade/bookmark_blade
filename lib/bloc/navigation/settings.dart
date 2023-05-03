@@ -6,7 +6,7 @@ class SettingsDeepNavigationStrategy extends DeepNavigationStrategy<String> {
     if (root == null) {
       switch (subNavigation) {
         case "theme":
-        case "privacy":
+          // case "privacy":
           return true;
         default:
           return false;

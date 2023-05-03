@@ -1,3 +1,4 @@
+import 'package:bookmark_blade/bloc/settings/settings.dart';
 import 'package:bookmark_models/bookmark_models.dart';
 import 'package:event_hive/event_hive.dart';
 import 'package:vhcblade_theme/vhcblade_picker.dart';
@@ -12,4 +13,5 @@ final typeAdapters = <GenericTypeAdapter>[
       OutgoingBookmarkShareInfo.new, (_) => 5),
   GenericTypeAdapter<IncomingBookmarkShareInfo>(
       IncomingBookmarkShareInfo.new, (_) => 6),
+  GenericTypeAdapter<BBSettings>(BBSettings.new, (_) => 7),
 ];
