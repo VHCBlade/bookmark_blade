@@ -82,7 +82,11 @@ class BookmarkLinkWidget extends StatelessWidget {
                                   "Are you sure you want to delete this bookmark?")),
                           onResponse:
                               (BlocEventChannel eventChannel, response) =>
-                                  response ? null : null,
+                                  response
+                                      ? context.fireEvent(
+                                          BookmarkEvent.deleteBookmark.event,
+                                          bookmark)
+                                      : null,
                         ),
                     icon: const Icon(Icons.delete)),
               if (external && showReorderable)

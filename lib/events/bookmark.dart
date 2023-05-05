@@ -15,6 +15,7 @@ enum BookmarkEvent<T> {
   addBookmark<BookmarkModel>(),
   updateBookmark<BookmarkModel>(),
   reorderBookmarks<ListMovement<BookmarkModel>>(),
+  deleteBookmark<BookmarkModel>(),
 
   // Share
   shareBookmarkCollection<BookmarkCollectionModel>(),

@@ -13,6 +13,8 @@ class BookmarkEditBloc extends Bloc {
         BookmarkEvent.addBookmark.event, (p0, p1) => addBookmark(p1));
     eventChannel.addEventListener<BookmarkModel>(
         BookmarkEvent.updateBookmark.event, (p0, p1) => addBookmark(p1, false));
+    eventChannel.addEventListener<BookmarkModel>(
+        BookmarkEvent.deleteBookmark.event, (p0, p1) => deleteBookmark(p1));
     eventChannel.addEventListener<ListMovement<BookmarkModel>>(
         BookmarkEvent.reorderBookmarks.event, (p0, p1) => reorderBookmark(p1));
   }
@@ -69,6 +71,17 @@ class BookmarkEditBloc extends Bloc {
             .where((element) => element != bookmark.autoGenId)
       ];
     }
+
+    update();
+  }
+
+  void deleteBookmark(BookmarkModel bookmark) {
+    if (!hasModel) {
+      return;
+    }
+
+    model!.bookmarkMap.remove(bookmark.autoGenId);
+    model!.bookmarkOrder.remove(bookmark.id);
 
     update();
   }

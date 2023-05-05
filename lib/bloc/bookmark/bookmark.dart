@@ -39,14 +39,14 @@ class BookmarkBloc extends Bloc {
   bool loading = false;
 
   final _addedBookmarkCollectionIndex = StreamController<int>.broadcast();
-  final _removeddBookmarkCollectionIndex =
+  final _removedBookmarkCollectionIndex =
       StreamController<Tuple2<int, BookmarkCollectionModel>>.broadcast();
 
   Stream<int> get addedBookmarkCollectionIndex =>
       _addedBookmarkCollectionIndex.stream;
   Stream<Tuple2<int, BookmarkCollectionModel>>
       get removedBookmarkCollectionIndex =>
-          _removeddBookmarkCollectionIndex.stream;
+          _removedBookmarkCollectionIndex.stream;
 
   BookmarkCollectionModel? bookmarkCollectionAt(int position) =>
       bookmarkList.list.length <= position
@@ -91,7 +91,7 @@ class BookmarkBloc extends Bloc {
     }
     final index = bookmarkList.list.indexOf(model.id!);
     bookmarkList.generateList(bookmarkMap.map.values);
-    _removeddBookmarkCollectionIndex.add(Tuple2(index, model));
+    _removedBookmarkCollectionIndex.add(Tuple2(index, model));
     updateBloc();
 
     return true;

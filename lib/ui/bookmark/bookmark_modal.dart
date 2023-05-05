@@ -21,6 +21,42 @@ class _BookmarkModalState extends State<BookmarkModal> {
       nameController.text.trim().isNotEmpty &&
       linkController.text.trim().isNotEmpty;
 
+  bool hasPopped = false;
+
+  void popBookmark() {
+    if (hasPopped) {
+      return;
+    }
+    hasPopped = true;
+    Navigator.of(context).pop(BookmarkModel()
+      ..name = nameController.text
+      ..url = linkController.text);
+  }
+
+  void popNothing() {
+    if (hasPopped) {
+      return;
+    }
+    hasPopped = true;
+    Navigator.of(context).pop(null);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    nameFocusNode.requestFocus();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    linkController.dispose();
+    linkFocusNode.dispose();
+    nameController.dispose();
+    nameFocusNode.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -51,25 +87,18 @@ class _BookmarkModalState extends State<BookmarkModal> {
                 !allowSave ? TextInputAction.next : TextInputAction.done,
             focusNode: linkFocusNode,
             onChanged: (_) => setState(() {}),
-            onSubmitted: (_) => allowSave
-                ? Navigator.of(context).pop(BookmarkModel()
-                  ..name = nameController.text
-                  ..url = linkController.text)
-                : nameFocusNode.requestFocus(),
+            onSubmitted: (_) =>
+                allowSave ? popBookmark() : nameFocusNode.requestFocus(),
           ),
         ],
       ),
       actions: [
         OutlinedButton(
-          onPressed: () => Navigator.of(context).pop(null),
+          onPressed: popNothing,
           child: const Text("Cancel"),
         ),
         ElevatedButton(
-          onPressed: allowSave
-              ? () => Navigator.of(context).pop(BookmarkModel()
-                ..name = nameController.text
-                ..url = linkController.text)
-              : null,
+          onPressed: allowSave ? popBookmark : null,
           child: const Text("Save"),
         ),
       ],
