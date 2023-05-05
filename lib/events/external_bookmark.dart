@@ -13,14 +13,15 @@ enum ExternalBookmarkEvent<T> {
   // Share
   importBookmarkCollection<String>(),
   updateImportedBookmarkCollection<UpdateImportedBookmark>(),
+  autoUpdateImportedBookmarkCollection<String?>(),
   ;
 
   BlocEventType<T> get event => BlocEventType.fromObject(this);
 }
 
 class UpdateImportedBookmark {
-  final String id;
-  final bool showUserError;
+  final IncomingBookmarkShareInfo shareInfo;
+  final bool userInitiated;
 
-  UpdateImportedBookmark(this.id, this.showUserError);
+  UpdateImportedBookmark(this.shareInfo, this.userInitiated);
 }

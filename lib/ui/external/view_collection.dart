@@ -2,12 +2,14 @@ import 'package:bookmark_blade/bloc/external/external_bookmark.dart';
 import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/events/external_bookmark.dart';
 import 'package:bookmark_blade/ui/bookmark.dart';
+import 'package:bookmark_blade/ui/external/share_info.dart';
 import 'package:bookmark_models/bookmark_models.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
 import 'package:event_db/event_db.dart';
 import 'package:event_modals/event_modals.dart';
 import 'package:event_navigation/event_navigation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ExternalBookmarkCollectionScreen extends StatelessWidget {
   const ExternalBookmarkCollectionScreen({super.key});
@@ -26,12 +28,29 @@ class ExternalBookmarkCollectionScreen extends StatelessWidget {
           selectedBookmark));
     }
 
-    return const EditBookmarkCollectionScreen();
+    return const ViewBookmarkCollectionScreen();
   }
 }
 
-class EditBookmarkCollectionScreen extends StatelessWidget {
-  const EditBookmarkCollectionScreen({super.key});
+class ViewBookmarkCollectionScreen extends StatefulWidget {
+  const ViewBookmarkCollectionScreen({super.key});
+
+  @override
+  State<ViewBookmarkCollectionScreen> createState() =>
+      _ViewBookmarkCollectionScreenState();
+}
+
+class _ViewBookmarkCollectionScreenState
+    extends State<ViewBookmarkCollectionScreen> {
+  @override
+  void initState() {
+    super.initState();
+    if (context.read<ExternalBookmarkBloc>().selected?.id != null) {
+      Future.delayed(Duration.zero).then((value) => context.fireEvent(
+          ExternalBookmarkEvent.autoUpdateImportedBookmarkCollection.event,
+          context.read<ExternalBookmarkBloc>().selected?.id!));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +65,7 @@ class EditBookmarkCollectionScreen extends StatelessWidget {
                 onPressed: () {
                   showDialog(
                       context: context,
-                      builder: (_) => ShareLinkDialog(model: bloc.selected!));
+                      builder: (_) => ShareInfoDialog(model: bloc.selected!));
                 },
                 icon: const Icon(Icons.share)),
             IconButton(
@@ -108,7 +127,7 @@ class EditBookmarkCollectionScreen extends StatelessWidget {
                   key: ValueKey(bookmark.id),
                   bookmark: bookmark,
                   showReorderable: true,
-                  external: false,
+                  internal: false,
                   index: index,
                 );
               },

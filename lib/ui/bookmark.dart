@@ -13,14 +13,14 @@ import 'bookmark/bookmark_modal.dart';
 class BookmarkLinkWidget extends StatelessWidget {
   final BookmarkModel bookmark;
   final bool showReorderable;
-  final bool external;
+  final bool internal;
   final int? index;
 
   const BookmarkLinkWidget({
     super.key,
     required this.bookmark,
     required this.showReorderable,
-    this.external = true,
+    this.internal = true,
     this.index,
   }) : assert(!showReorderable || index != null);
 
@@ -33,7 +33,7 @@ class BookmarkLinkWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
       child: GestureDetector(
-        onTap: external
+        onTap: internal
             ? () => showEventDialog<BookmarkModel>(
                   context: context,
                   onResponse:
@@ -73,7 +73,14 @@ class BookmarkLinkWidget extends StatelessWidget {
               ElevatedButton(
                   onPressed: () => launch(context),
                   child: const Text("Launch")),
-              if (external)
+              if (!internal)
+                IconButton(
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: bookmark.url));
+                      Fluttertoast.showToast(msg: "Copied Link to Clipboard!");
+                    },
+                    icon: const Icon(Icons.copy)),
+              if (internal)
                 IconButton(
                     onPressed: () => showEventDialog<bool>(
                           context: context,
@@ -89,7 +96,7 @@ class BookmarkLinkWidget extends StatelessWidget {
                                       : null,
                         ),
                     icon: const Icon(Icons.delete)),
-              if (external && showReorderable)
+              if (internal && showReorderable)
                 ReorderableDragStartListener(
                   index: index!,
                   child: const Padding(

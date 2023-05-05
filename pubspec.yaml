@@ -40,10 +40,10 @@ dependencies:
   # vhcblade_theme:
   #   path: ../vhcblade_theme
 
-  fl_chart: ^0.61.0
+  fl_chart: ^0.62.0
   flutter_markdown: ^0.6.13
   flutter_native_timezone: ^2.0.0
-  flutter_local_notifications: ^13.0.0
+  flutter_local_notifications: ^14.0.0
   google_sign_in: ^6.0.2
   # google_mobile_ads: ^2.3.0
   

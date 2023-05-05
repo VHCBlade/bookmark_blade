@@ -32,6 +32,21 @@ class IncomingShareBookmarkBloc extends Bloc {
     eventChannel.addEventListener(
         ExternalBookmarkEvent.importBookmarkCollection.event,
         (p0, p1) => importBookmark(p1));
+    eventChannel.addEventListener(
+        ExternalBookmarkEvent.updateImportedBookmarkCollection.event,
+        (p0, p1) => updateImportedBookmark(p1.shareInfo, p1.userInitiated));
+    eventChannel.addEventListener(
+        ExternalBookmarkEvent.autoUpdateImportedBookmarkCollection.event,
+        (p0, p1) {
+      if (p1 == null) {
+        return;
+      }
+      final fullId = createFullId(p1);
+      final currentShareInfo = shareBookmarkMap.map[fullId];
+      if (currentShareInfo != null) {
+        updateImportedBookmark(currentShareInfo, false);
+      }
+    });
   }
 
   final DatabaseRepository database;
@@ -53,19 +68,18 @@ class IncomingShareBookmarkBloc extends Bloc {
     updateBloc();
   }
 
-  void autoUpdate() {
-    // TODO BB-9
-  }
-
   String shareLink(BookmarkCollectionModel model) {
     return api.createShareLink(model.idSuffix!);
   }
 
-  String createFullId(String id) => (IncomingBookmarkShareInfo()
-        ..idSuffix = (BookmarkCollectionModel()..idSuffix = id).id)
+  static String createFullId(String id) => (IncomingBookmarkShareInfo()
+        ..idSuffix = (BookmarkCollectionModel()
+              ..idSuffix = (BookmarkCollectionModel()..id = id).idSuffix)
+            .id)
       .id!;
 
-  Future<bool> updateShare(IncomingBookmarkShareInfo info) async {
+  Future<bool> updateImportedBookmark(IncomingBookmarkShareInfo info,
+      [bool userInitiated = true]) async {
     final syncRequest = BookmarkSyncRequest()
       ..collectionId = info.idSuffix!
       ..lastUpdated = info.lastUpdated;
@@ -73,19 +87,31 @@ class IncomingShareBookmarkBloc extends Bloc {
     final response = await api.request("POST", "bookmarks/${info.idSuffix!}",
         (request) => request.body = json.encode(syncRequest.toMap()));
 
+    if (userInitiated) {
+      info.lastChecked = DateTime.now();
+      info.lastCheckedStatus = LastCheckedStatus.loading;
+      updateBloc();
+    }
+
     switch (response.statusCode) {
       case 200:
         break;
       case 504:
-        eventChannel.fireEvent(AlertEvent.noInternetAccess.event, null);
+        if (userInitiated) {
+          eventChannel.fireEvent(AlertEvent.noInternetAccess.event, null);
+          info.lastCheckedStatus = LastCheckedStatus.failed;
+        }
         updateBloc();
         return false;
       case 404:
       default:
-        eventChannel.fireEvent(
-            AlertEvent.error.event,
-            "We couldn't find an update for the bookmark collection for this link. The original sharer may have"
-            " deleted it.");
+        if (userInitiated) {
+          eventChannel.fireEvent(
+              AlertEvent.error.event,
+              "We couldn't find an update for the bookmark collection for this link. The original sharer may have"
+              " deleted it.");
+          info.lastCheckedStatus = LastCheckedStatus.failed;
+        }
         updateBloc();
         return false;
     }
@@ -93,14 +119,20 @@ class IncomingShareBookmarkBloc extends Bloc {
     final bodyMap = await response.bodyAsMap;
     final syncData = BookmarkSyncData()..loadFromMap(bodyMap);
 
+    if (userInitiated) {
+      info.lastCheckedStatus = LastCheckedStatus.succeeded;
+      updateBloc();
+    }
+
     if (!syncData.updated) {
       return false;
     }
 
     info.lastUpdated = syncData.lastUpdated;
     shareBookmarkMap.specificDatabase().saveModel(info);
-    eventChannel.fireEvent(ExternalBookmarkEvent.updateBookmarkCollection.event,
-        syncData.collectionModel);
+    eventChannel.fireEvent<BookmarkCollectionModel>(
+        ExternalBookmarkEvent.updateBookmarkCollection.event,
+        syncData.collectionModel!);
 
     return true;
   }
@@ -125,7 +157,7 @@ class IncomingShareBookmarkBloc extends Bloc {
     final currentShareInfo = shareBookmarkMap.map[fullId];
 
     if (currentShareInfo != null) {
-      if (await updateShare(currentShareInfo)) {
+      if (await updateImportedBookmark(currentShareInfo)) {
         updateBloc();
       }
       return;
