@@ -1,4 +1,5 @@
 import 'package:bookmark_blade/bloc/bookmark/outgoing_share.dart';
+import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/ui/bookmark.dart';
 import 'package:bookmark_models/bookmark_models.dart';
 import 'package:event_bloc/event_bloc_widgets.dart';
@@ -32,6 +33,27 @@ class ShareCollectionDialog extends StatelessWidget {
       );
     }
 
-    return ShareLinkDialog(model: model);
+    return ShareLinkDialog(
+      model: model,
+      footer: Row(children: [
+        if (!bloc.needsUpdate(model))
+          const Text(
+            "Shared Bookmark Collection is up to date!",
+            textAlign: TextAlign.left,
+          ),
+        if (bloc.needsUpdate(model)) ...[
+          const Expanded(
+              child: Text(
+            "Needs update",
+            textAlign: TextAlign.left,
+          )),
+          ElevatedButton(
+            onPressed: () => context.fireEvent(
+                BookmarkEvent.updateSharedBookmarkCollection.event, model),
+            child: const Text("Update"),
+          )
+        ]
+      ]),
+    );
   }
 }

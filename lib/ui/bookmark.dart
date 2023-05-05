@@ -106,8 +106,9 @@ class BookmarkLinkWidget extends StatelessWidget {
 
 class ShareLinkDialog extends StatelessWidget {
   final BookmarkCollectionModel model;
+  final Widget? footer;
 
-  const ShareLinkDialog({super.key, required this.model});
+  const ShareLinkDialog({super.key, required this.model, this.footer});
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +135,9 @@ class ShareLinkDialog extends StatelessWidget {
                   },
                   icon: const Icon(Icons.copy))
             ],
-          )
+          ),
+          if (footer != null) const SizedBox(height: 10),
+          if (footer != null) footer!,
         ],
       ),
     );

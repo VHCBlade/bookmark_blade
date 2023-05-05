@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:bookmark_blade/bloc/bookmark/bookmark.dart';
 import 'package:bookmark_blade/bloc/profile.dart';
+import 'package:bookmark_blade/events/alert.dart';
 import 'package:bookmark_blade/events/bookmark.dart';
 import 'package:bookmark_blade/repository.dart/api.dart';
 import 'package:bookmark_models/bookmark_requests.dart';
@@ -28,6 +29,9 @@ class OutgoingShareBookmarkBloc extends Bloc {
         BookmarkEvent.loadAll.event, (p0, p1) => loadAll());
     eventChannel.addEventListener(BookmarkEvent.shareBookmarkCollection.event,
         (p0, p1) => initialShareBookmark(p1));
+    eventChannel.addEventListener(
+        BookmarkEvent.updateSharedBookmarkCollection.event,
+        (p0, p1) => updateSharedBookmark(p1, true));
   }
 
   final DatabaseRepository database;
@@ -54,20 +58,69 @@ class OutgoingShareBookmarkBloc extends Bloc {
     return api.createShareLink(model.idSuffix!);
   }
 
+  Future<BookmarkShareRequest> createShareRequest(
+      BookmarkCollectionModel collectionModel) async {
+    final shareRequest = BookmarkShareRequest();
+    shareRequest.collectionModel = collectionModel;
+    shareRequest.profile = (await bloc.completer.future).identifier;
+
+    return shareRequest;
+  }
+
+  bool needsUpdate(BookmarkCollectionModel model) {
+    final info = shareBookmarkMap.map[model.outgoingId]!;
+    return info.lastUpdated != model.lastEdited;
+  }
+
+  void updateSharedBookmark(BookmarkCollectionModel collectionModel,
+      [bool userInitiated = false]) async {
+    final info = shareBookmarkMap.map[collectionModel.outgoingId]!;
+    info.shouldBeDeleted = false;
+    await shareBookmarkMap.updateModel(info);
+
+    if (!needsUpdate(collectionModel)) {
+      return;
+    }
+
+    final shareRequest = await createShareRequest(collectionModel);
+
+    final response = await api.request(
+        "PUT",
+        "bookmarks/${collectionModel.idSuffix}",
+        (request) => request.body = json.encode(shareRequest.toMap()));
+
+    switch (response.statusCode) {
+      case 200:
+        break;
+      case 504:
+        eventChannel.fireEvent(AlertEvent.noInternetAccess.event, null);
+        updateBloc();
+        return;
+      case 404:
+      default:
+        eventChannel.fireEvent(AlertEvent.error.event,
+            "Something went wrong updating your shared bookmark collection. Try deleting your current bookmark collection first and try sharing again.");
+        updateBloc();
+        return;
+    }
+
+    info.lastUpdated = collectionModel.lastEdited;
+    await shareBookmarkMap.updateModel(info);
+    updateBloc();
+
+    return;
+  }
+
   void initialShareBookmark(BookmarkCollectionModel collectionModel) async {
     if (shareBookmarkMap.map.containsKey(collectionModel.outgoingId)) {
-      final info = shareBookmarkMap.map[collectionModel.outgoingId]!;
-      info.shouldBeDeleted = false;
-      await shareBookmarkMap.specificDatabase().saveModel(info);
+      updateSharedBookmark(collectionModel);
 
       return;
     }
     attemptingToAdd = true;
     updateBloc();
 
-    final shareRequest = BookmarkShareRequest();
-    shareRequest.collectionModel = collectionModel;
-    shareRequest.profile = (await bloc.completer.future).identifier;
+    final shareRequest = await createShareRequest(collectionModel);
 
     final response = await api.request("POST", "bookmarks",
         (request) => request.body = json.encode(shareRequest.toMap()));

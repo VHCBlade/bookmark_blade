@@ -19,6 +19,7 @@ enum BookmarkEvent<T> {
 
   // Share
   shareBookmarkCollection<BookmarkCollectionModel>(),
+  updateSharedBookmarkCollection<BookmarkCollectionModel>(),
   ;
 
   BlocEventType<T> get event => BlocEventType.fromObject(this);

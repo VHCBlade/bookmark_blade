@@ -51,7 +51,6 @@ class IncomingShareBookmarkBloc extends Bloc {
   Future<void> loadAll() async {
     await shareBookmarkMap.loadAll();
     updateBloc();
-    // TODO BB-9
   }
 
   void autoUpdate() {
